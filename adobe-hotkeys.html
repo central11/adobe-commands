@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adobe CS — Keyboard Reference</title>
+<style>
+  :root{--v-bg:#F5F0E8;--v-panel:#EDE8DF;--v-white:#FFFFFF;--v-ink:#1A1A1A;--v-muted:#5A5A5A;--v-red:#EE2E24;--v-orange:#F78B29;--v-yellow:#FCCC0A;--v-green:#00933C;--v-blue:#0039A6;--v-purple:#B933AD;--v-brown:#996633;--v-gray:#808183;--v-font:'Helvetica Neue','Arial',sans-serif;--v-mono:'Courier New',monospace;--bdr:1px solid #1A1A1A;--bdr-lt:1px solid #CCCCCC}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--v-font);font-size:14px;background:var(--v-bg);color:var(--v-ink);line-height:1.5;-webkit-font-smoothing:antialiased}
+  /* stripe */
+  .stripe{display:flex;height:10px;position:sticky;top:0;z-index:200}
+  .stripe span{flex:1}
+  /* header */
+  header{position:sticky;top:10px;z-index:100;background:var(--v-bg);border-bottom:2px solid var(--v-ink);padding:10px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  .logo{font-size:16px;font-weight:700;text-transform:uppercase;letter-spacing:-.3px;white-space:nowrap}
+  .logo em{font-style:normal;font-weight:400;color:var(--v-muted);text-transform:none;font-size:12px;margin-left:6px}
+  /* tabs */
+  .tabs{display:flex}
+  .tab{padding:6px 14px;border:1.5px solid var(--v-ink);border-right-width:0;background:transparent;color:var(--v-muted);font-family:var(--v-font);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:background .1s,color .1s}
+  .tab:last-child{border-right-width:1.5px}
+  .tab:hover{background:var(--v-ink);color:#fff}
+  .tab.on[data-a="all"]{background:var(--v-ink);color:#fff}
+  .tab.on[data-a="ps"]{background:var(--v-blue);color:#fff;border-color:var(--v-blue)}
+  .tab.on[data-a="ai"]{background:var(--v-orange);color:#fff;border-color:var(--v-orange)}
+  .tab.on[data-a="id"]{background:var(--v-red);color:#fff;border-color:var(--v-red)}
+  .tab.on[data-a="pr"]{background:var(--v-purple);color:#fff;border-color:var(--v-purple)}
+  /* search */
+  .srch{margin-left:auto;position:relative}
+  .srch input{background:var(--v-white);border:1.5px solid var(--v-ink);color:var(--v-ink);font-family:var(--v-font);font-size:13px;padding:6px 12px 6px 30px;width:240px;outline:none;transition:border-color .1s}
+  .srch input:focus{border-color:var(--v-blue);box-shadow:0 0 0 3px rgba(0,57,166,.12)}
+  .srch input::placeholder{color:#aaa}
+  .srch-ico{position:absolute;left:9px;top:50%;transform:translateY(-50%);color:var(--v-muted);pointer-events:none}
+  /* layout */
+  .wrap{display:flex}
+  /* sidebar */
+  .sb{width:196px;min-width:196px;position:sticky;top:62px;height:calc(100vh - 62px);overflow-y:auto;border-right:2px solid var(--v-ink);background:var(--v-panel);scrollbar-width:thin;scrollbar-color:#ccc transparent}
+  .sb-app{border-bottom:var(--bdr-lt)}
+  .sb-name{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:8px 12px 5px;color:#fff;display:block}
+  .sb-name.ps{background:var(--v-blue)}.sb-name.ai{background:var(--v-orange)}.sb-name.id{background:var(--v-red)}.sb-name.pr{background:var(--v-purple)}
+  .sb-link{display:block;padding:4px 12px;color:var(--v-muted);text-decoration:none;font-size:12px;border-left:3px solid transparent;transition:all .1s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .sb-link:hover{color:var(--v-ink);background:rgba(0,0,0,.05)}
+  .sb-link.on-ps{color:var(--v-blue);border-left-color:var(--v-blue);background:rgba(0,57,166,.06);font-weight:700}
+  .sb-link.on-ai{color:var(--v-orange);border-left-color:var(--v-orange);background:rgba(247,139,41,.08);font-weight:700}
+  .sb-link.on-id{color:var(--v-red);border-left-color:var(--v-red);background:rgba(238,46,36,.06);font-weight:700}
+  .sb-link.on-pr{color:var(--v-purple);border-left-color:var(--v-purple);background:rgba(185,51,173,.06);font-weight:700}
+  /* main */
+  .main{flex:1;padding:28px 32px;overflow-x:hidden}
+  .app-sec{margin-bottom:48px}
+  .app-head{display:flex;align-items:stretch;margin-bottom:20px}
+  .app-bar{width:8px;flex-shrink:0;margin-right:14px}
+  .app-bar.ps{background:var(--v-blue)}.app-bar.ai{background:var(--v-orange)}.app-bar.id{background:var(--v-red)}.app-bar.pr{background:var(--v-purple)}
+  .app-ttl-block{border-bottom:2px solid var(--v-ink);padding-bottom:8px;flex:1}
+  .app-ttl{font-size:26px;font-weight:700;text-transform:uppercase;letter-spacing:-.5px;line-height:1;display:flex;align-items:baseline;gap:12px}
+  .app-ver{font-size:10px;font-weight:400;letter-spacing:.08em;text-transform:uppercase;color:var(--v-muted)}
+  /* category */
+  .cat{margin-bottom:24px;scroll-margin-top:72px}
+  .cat-ttl{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--v-muted);padding:5px 10px;background:var(--v-panel);border:var(--bdr);border-bottom:var(--bdr-lt)}
+  /* table */
+  .tbl{width:100%;border-collapse:collapse;background:var(--v-white);border:var(--bdr);border-top:none}
+  .tbl tr{border-bottom:var(--bdr-lt);transition:background .08s}
+  .tbl tr:hover{background:var(--v-bg)}
+  .tbl tr:last-child{border-bottom:none}
+  .tbl td{padding:6px 10px;vertical-align:top}
+  .td-name{width:42%;font-size:13px}
+  .td-key{width:22%;text-align:right;white-space:nowrap}
+  .td-tags{width:36%;padding-left:8px}
+  kbd{display:inline-block;background:var(--v-panel);border:1px solid #bbb;border-bottom-width:2px;color:var(--v-ink);font-family:var(--v-mono);font-size:10.5px;font-weight:700;padding:1px 5px;margin:1px 0;white-space:nowrap;line-height:1.6}
+  .ksep{font-size:10px;color:#aaa;margin:0 1px}
+  /* tags */
+  .tag{display:inline-block;padding:1px 7px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;background:transparent;border:1.5px solid #ccc;color:var(--v-muted);margin:1px 2px 1px 0;cursor:pointer;transition:all .1s}
+  .tag:hover,.tag.on{background:var(--v-ink);color:#fff;border-color:var(--v-ink)}
+  /* active tag bar */
+  .tagbar{display:none;align-items:center;gap:8px;padding:8px 12px;background:var(--v-ink);color:#fff;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:16px}
+  .tagbar.on{display:flex}
+  .tagbar-x{margin-left:auto;background:transparent;border:1.5px solid #fff;color:#fff;font-family:var(--v-font);font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;cursor:pointer}
+  .tagbar-x:hover{background:#fff;color:var(--v-ink)}
+  /* misc */
+  .empty{color:var(--v-muted);font-size:13px;padding:60px 0;text-align:center;font-weight:700;text-transform:uppercase;letter-spacing:.08em}
+  mark{background:var(--v-yellow);color:var(--v-ink);padding:0 2px}
+  footer{border-top:2px solid var(--v-ink);padding:18px 32px;display:flex;align-items:center;flex-wrap:wrap;gap:12px}
+  .ft{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--v-muted)}
+  .dots{display:flex;margin-left:auto}
+  .dot{width:26px;height:26px;border-radius:50%;font-size:10px;font-weight:700;color:#fff;display:inline-flex;align-items:center;justify-content:center;margin-left:-4px;border:2px solid var(--v-bg)}
+  ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--v-panel)}::-webkit-scrollbar-thumb{background:#bbb}
+  @media(max-width:700px){.sb{display:none}.main{padding:14px}.td-tags{display:none}}
+</style>
+</head>
+<body>
+<div class="stripe">
+  <span style="background:#EE2E24"></span><span style="background:#F78B29"></span>
+  <span style="background:#FCCC0A"></span><span style="background:#00933C"></span>
+  <span style="background:#0039A6"></span><span style="background:#B933AD"></span>
+  <span style="background:#996633"></span><span style="background:#808183"></span>
+</div>
+<header>
+  <div class="logo">Adobe CS <em>Keyboard Reference — Windows</em></div>
+  <div class="tabs">
+    <button class="tab on" data-a="all" onclick="fApp('all',this)">All</button>
+    <button class="tab" data-a="ps" onclick="fApp('ps',this)">Photoshop</button>
+    <button class="tab" data-a="ai" onclick="fApp('ai',this)">Illustrator</button>
+    <button class="tab" data-a="id" onclick="fApp('id',this)">InDesign</button>
+    <button class="tab" data-a="pr" onclick="fApp('pr',this)">Premiere</button>
+  </div>
+  <div class="srch">
+    <span class="srch-ico">⌕</span>
+    <input type="text" id="si" placeholder="Search commands or tags…" oninput="fSearch(this.value)">
+  </div>
+</header>
+<div class="wrap">
+  <nav class="sb" id="sb"></nav>
+  <div style="flex:1;display:flex;flex-direction:column">
+    <div class="tagbar" id="tagbar">
+      <span id="taglabel"></span>
+      <button class="tagbar-x" onclick="clrTag()">✕ Clear tag</button>
+    </div>
+    <main class="main" id="main"></main>
+    <footer>
+      <div class="ft">Adobe Creative Suite CC 2024 — Windows</div>
+      <div class="dots">
+        <span class="dot" style="background:#0039A6">PS</span>
+        <span class="dot" style="background:#F78B29">AI</span>
+        <span class="dot" style="background:#EE2E24">ID</span>
+        <span class="dot" style="background:#B933AD">PR</span>
+      </div>
+    </footer>
+  </div>
+</div>
+<script>
+const D=[
+ {id:'ps',name:'Photoshop',v:'CC 2024 — Win',cats:[
+  {t:'Tools',c:[
+   ['Move Tool','V',['move','position','drag','tool']],
+   ['Rectangular / Elliptical Marquee','M',['select','marquee','rectangle','ellipse','selection','region']],
+   ['Lasso / Polygonal / Magnetic Lasso','L',['select','lasso','freehand','selection']],
+   ['Object Selection / Quick Selection / Magic Wand','W',['select','auto','smart','subject','magic wand']],
+   ['Crop / Perspective Crop / Slice','C',['crop','trim','cut','resize','slice']],
+   ['Eyedropper / Color Sampler / Ruler / Note','I',['eyedropper','sample','color picker','measure','picker']],
+   ['Spot Healing / Healing Brush / Patch / Red Eye','J',['heal','repair','remove','retouch','blemish','patch']],
+   ['Brush / Pencil / Color Replacement / Mixer Brush','B',['brush','paint','draw','pencil']],
+   ['Clone Stamp / Pattern Stamp','S',['clone','stamp','copy','pattern','retouching']],
+   ['History Brush / Art History Brush','Y',['history','restore','undo paint']],
+   ['Eraser / Background Eraser / Magic Eraser','E',['erase','delete','remove','background remove','transparent']],
+   ['Gradient / Paint Bucket','G',['gradient','fill','bucket','color fill','paint']],
+   ['Dodge / Burn / Sponge','O',['dodge','burn','lighten','darken','saturate','sponge']],
+   ['Pen / Freeform Pen / Curvature Pen','P',['pen','path','vector','bezier','anchor','draw']],
+   ['Horizontal / Vertical Type','T',['text','type','font','write','title']],
+   ['Path Selection / Direct Selection','A',['path','anchor','select','vector']],
+   ['Shape Tools (Rect/Ellipse/Polygon/Line/Custom)','U',['shape','vector','rectangle','ellipse','polygon','star']],
+   ['Hand Tool','H',['pan','scroll','navigate','hand']],
+   ['Rotate View','R',['rotate','canvas','view']],
+   ['Zoom Tool','Z',['zoom','magnify','lens']],
+   ['Cycle tools in group','Shift + tool key',['tool','cycle','switch']],
+   ['Switch Foreground / Background colors','X',['foreground','background','swap','color']],
+   ['Default Foreground / Background colors','D',['default','reset','black','white','color']],
+   ['Toggle Quick Mask','Q',['mask','quick mask','selection','red overlay','paint selection']],
+   ['Toggle Screen Modes','F',['fullscreen','screen','view','mode','presentation']],
+  ]},
+  {t:'File',c:[
+   ['New','Ctrl+N',['new','create','document','blank']],
+   ['Open','Ctrl+O',['open','file','import']],
+   ['Browse in Bridge','Ctrl+Alt+O',['bridge','browse','file manager']],
+   ['Close','Ctrl+W',['close','file']],
+   ['Close All','Ctrl+Alt+W',['close all']],
+   ['Save','Ctrl+S',['save']],
+   ['Save As','Ctrl+Shift+S',['save as','export','rename','new file']],
+   ['Save a Copy','Ctrl+Alt+S',['copy','save','backup']],
+   ['Export As','Ctrl+Alt+Shift+W',['export','save for web','png','jpg','gif','webp']],
+   ['Quick Export as PNG','Ctrl+Shift+Alt+W',['export','png','quick','fast']],
+   ['Revert','F12',['revert','undo all','reset file','discard changes']],
+   ['Print','Ctrl+P',['print','output']],
+   ['Quit / Exit','Ctrl+Q',['quit','exit','close app']],
+  ]},
+  {t:'Edit',c:[
+   ['Undo','Ctrl+Z',['undo','back']],
+   ['Step Backward (multiple undos)','Ctrl+Alt+Z',['undo','step back','history','multiple undo']],
+   ['Step Forward (redo)','Ctrl+Shift+Z',['redo','step forward','history']],
+   ['Fade last filter or adjustment','Ctrl+Shift+F',['fade','blend','opacity','filter','lessen']],
+   ['Cut','Ctrl+X',['cut','remove','clipboard']],
+   ['Copy','Ctrl+C',['copy','clipboard','duplicate']],
+   ['Copy Merged (all layers)','Ctrl+Shift+C',['copy merged','composite','all layers','flatten copy']],
+   ['Paste','Ctrl+V',['paste','clipboard']],
+   ['Paste in Place','Ctrl+Shift+V',['paste in place','same position','register']],
+   ['Paste Into (selection)','Ctrl+Alt+Shift+V',['paste into','mask','composite','inside']],
+   ['Fill dialog','Shift+F5',['fill','bucket','solid','color fill']],
+   ['Fill with Foreground Color','Alt+Backspace',['fill','foreground','quick fill']],
+   ['Fill with Background Color','Ctrl+Backspace',['fill','background','quick fill']],
+   ['Free Transform','Ctrl+T',['transform','resize','rotate','scale','warp','skew','distort']],
+   ['Transform Again','Ctrl+Shift+T',['transform','repeat','again']],
+   ['Preferences General','Ctrl+K',['preferences','settings','options']],
+  ]},
+  {t:'Select',c:[
+   ['Select All','Ctrl+A',['select all','everything']],
+   ['Deselect','Ctrl+D',['deselect','clear selection','none']],
+   ['Reselect','Ctrl+Shift+D',['reselect','restore selection','bring back']],
+   ['Inverse Selection','Ctrl+Shift+I',['inverse','invert','opposite','flip selection']],
+   ['Select All Layers','Ctrl+Alt+A',['select all layers']],
+   ['Feather Selection','Shift+F6',['feather','soften edge','blur edge','smooth selection']],
+   ['Load selection from layer mask','Ctrl+click mask',['load','selection','mask','layer mask']],
+   ['Add to selection','Shift+drag',['add','selection','extend','include more']],
+   ['Subtract from selection','Alt+drag',['subtract','remove','deselect area']],
+   ['Intersect selection','Shift+Alt+drag',['intersect','overlap','selection']],
+  ]},
+  {t:'Image Adjustments',c:[
+   ['Levels','Ctrl+L',['levels','exposure','brightness','contrast','tones','adjust','histogram']],
+   ['Auto Levels','Ctrl+Shift+L',['auto levels','auto tone','automatic']],
+   ['Auto Contrast','Ctrl+Alt+Shift+L',['auto contrast','automatic']],
+   ['Auto Color','Ctrl+Shift+B',['auto color','color balance','automatic']],
+   ['Curves','Ctrl+M',['curves','exposure','contrast','tones','adjust','S curve']],
+   ['Color Balance','Ctrl+B',['color balance','color cast','adjust','shadows midtones']],
+   ['Hue / Saturation','Ctrl+U',['hue','saturation','lightness','color','adjust','vibrance','colorize']],
+   ['Desaturate (black and white)','Ctrl+Shift+U',['desaturate','black white','grayscale','remove color']],
+   ['Invert','Ctrl+I',['invert','negative','flip colors','reverse']],
+   ['Image Size','Ctrl+Alt+I',['image size','resize','resolution','dimensions','canvas','pixels']],
+   ['Canvas Size','Ctrl+Alt+C',['canvas','resize','extend','add space','crop']],
+  ]},
+  {t:'Layers',c:[
+   ['New Layer (with dialog)','Ctrl+Shift+N',['new layer','create layer']],
+   ['New Layer (no dialog)','Ctrl+Alt+Shift+N',['new layer','quick','fast']],
+   ['New Layer via Copy','Ctrl+J',['duplicate','copy layer','new layer','dupe']],
+   ['New Layer via Cut','Ctrl+Shift+J',['cut layer','separate','new layer']],
+   ['Group Layers','Ctrl+G',['group','organize','folder','collect']],
+   ['Ungroup Layers','Ctrl+Shift+G',['ungroup','flatten group','separate']],
+   ['Merge Layers','Ctrl+E',['merge','flatten','combine layers','stamp']],
+   ['Merge Visible','Ctrl+Shift+E',['merge visible','flatten visible']],
+   ['Select layer above','Alt+]',['layer','navigate up','above']],
+   ['Select layer below','Alt+[',['layer','navigate down','below']],
+   ['Move layer up in stack','Ctrl+]',['reorder','stack','move up','arrange']],
+   ['Move layer down in stack','Ctrl+[',['reorder','stack','move down','arrange']],
+   ['Move layer to top','Ctrl+Shift+]',['top','stack','bring to front','front']],
+   ['Move layer to bottom','Ctrl+Shift+[',['bottom','stack','send to back','back']],
+   ['Cycle blend modes','Shift++ or Shift+–',['blend mode','cycle','switch mode']],
+   ['Normal blend mode','Alt+Shift+N',['normal','blend mode']],
+   ['Multiply blend mode','Alt+Shift+M',['multiply','blend','darken','burn']],
+   ['Screen blend mode','Alt+Shift+S',['screen','blend','lighten','dodge']],
+   ['Overlay blend mode','Alt+Shift+O',['overlay','blend','contrast']],
+   ['Luminosity blend mode','Alt+Shift+Y',['luminosity','blend','color']],
+   ['Lock transparent pixels','/ (slash)',['lock','transparency','protect','fill only']],
+   ['Create Clipping Mask','Ctrl+Alt+G',['clip','mask','clipping mask','attach to below','nested']],
+   ['Load layer as selection','Ctrl+click layer',['selection','layer','load','outline']],
+   ['Open Layer Style dialog','Double-click thumbnail',['layer style','effects','fx','shadow','glow','bevel']],
+   ['Set opacity to 100%','0 (non-paint tool)',['opacity','100','solid']],
+   ['Set opacity to 50%','5 (non-paint tool)',['opacity','50','half','semi transparent']],
+  ]},
+  {t:'View & Navigation',c:[
+   ['Zoom In','Ctrl+=',['zoom in','magnify','enlarge']],
+   ['Zoom Out','Ctrl+–',['zoom out','shrink','reduce']],
+   ['Fit on Screen','Ctrl+0',['fit','screen','zoom to fit','overview']],
+   ['Actual Pixels (100%)','Ctrl+1',['100%','actual size','pixel perfect','zoom']],
+   ['Show/Hide Extras (guides, paths)','Ctrl+H',['extras','guides','paths','grid','hide show']],
+   ['Show/Hide Guides','Ctrl+;',['guides','show','hide','ruler guides']],
+   ['Show/Hide Grid','Ctrl+\'',['grid','show','hide']],
+   ['Show/Hide Rulers','Ctrl+R',['rulers','measure','show','inches','pixels']],
+   ['Toggle Snap','Ctrl+Shift+;',['snap','grid','guides','align','magnetic']],
+   ['Proof Colors (soft proof)','Ctrl+Y',['proof','soft proof','color','simulate','cmyk preview']],
+   ['Gamut Warning','Ctrl+Shift+Y',['gamut','out of gamut','warning','color','cmyk']],
+   ['Zoom in (temporary)','Ctrl+Space',['zoom','temporary','hold']],
+   ['Pan / Hand tool (temporary)','Space',['pan','scroll','navigate','hand','temp']],
+   ['Scroll document','Page Up / Page Down',['scroll','navigate','move view']],
+  ]},
+  {t:'Brushes & Painting',c:[
+   ['Decrease brush size','[',['brush','smaller','size','shrink']],
+   ['Increase brush size',']',['brush','larger','size','grow']],
+   ['Decrease brush hardness','Shift+[',['brush','soft','hardness','feather']],
+   ['Increase brush hardness','Shift+]',['brush','hard','hardness','crisp']],
+   ['Previous brush',', (comma)',['brush','switch','previous']],
+   ['Next brush','. (period)',['brush','switch','next']],
+   ['Brush Settings panel','F5',['brush','panel','settings','options']],
+   ['Set opacity (1=10%, 0=100%)','1–9, 0 keys',['opacity','brush','flow','transparent']],
+   ['Sample color while painting','Alt (hold)',['eyedropper','sample','color pick','temporary']],
+   ['HUD color picker','Ctrl+Alt+click (brush)',['hud','color','picker','wheel','on canvas']],
+   ['Paint a straight line','Click then Shift+click',['line','straight','brush','constrain']],
+  ]},
+  {t:'Type & Text',c:[
+   ['Center text alignment','Ctrl+Shift+C',['center','align','text','paragraph']],
+   ['Left-align text','Ctrl+Shift+L',['left','align','text']],
+   ['Right-align text','Ctrl+Shift+R',['right','align','text']],
+   ['Select all text in layer','Ctrl+A',['select all','text','type']],
+   ['Increase font size 2pt','Ctrl+Shift+>',['font size','bigger','larger']],
+   ['Decrease font size 2pt','Ctrl+Shift+<',['font size','smaller']],
+   ['Increase leading (line height)','Alt+↓',['leading','line height','spacing']],
+   ['Decrease leading (line height)','Alt+↑',['leading','line height','spacing','tighten']],
+   ['Increase kerning / tracking','Alt+→',['kerning','tracking','letter spacing','spread']],
+   ['Decrease kerning / tracking','Alt+←',['kerning','tracking','letter spacing','tighten']],
+   ['Toggle underline','Ctrl+Shift+U',['underline','format','text decoration']],
+   ['Toggle strikethrough','Ctrl+Shift+/',['strikethrough','format','delete text']],
+   ['Commit / confirm text edit','Ctrl+Enter',['commit','confirm','done','finish editing']],
+   ['Cancel text edit','Esc',['cancel','escape','discard text']],
+  ]},
+  {t:'Filters',c:[
+   ['Re-apply last filter','Ctrl+F',['filter','repeat','last','reapply']],
+   ['Open last filter with dialog','Ctrl+Alt+F',['filter','dialog','settings','adjust']],
+   ['Camera Raw Filter','Ctrl+Shift+A',['camera raw','raw','develop','lightroom','filter']],
+   ['Liquify','Ctrl+Shift+X',['liquify','warp','distort','push','bulge','filter']],
+   ['Vanishing Point','Ctrl+Alt+V',['vanishing point','perspective','clone','filter']],
+   ['Adaptive Wide Angle','Ctrl+Shift+Alt+A',['wide angle','lens','distortion','straighten','filter']],
+   ['Lens Correction','Ctrl+Shift+R',['lens','correction','distortion','barrel','vignette','filter']],
+  ]},
+  {t:'Panels & Windows',c:[
+   ['Actions panel','Alt+F9',['actions','automate','record','macro','batch']],
+   ['Brush Settings panel','F5',['brush','panel','settings']],
+   ['Color panel','F6',['color','panel','swatches']],
+   ['Info panel','F8',['info','panel','coordinates','color values','measurements']],
+   ['Layers panel','F7',['layers','panel','stack']],
+   ['Hide all panels','Tab',['panels','hide','show','clean screen','distraction free']],
+   ['Hide panels but keep toolbox','Shift+Tab',['panels','hide','toolbox','tools']],
+  ]},
+ ]},
+ {id:'ai',name:'Illustrator',v:'CC 2024 — Win',cats:[
+  {t:'Tools',c:[
+   ['Selection Tool','V',['select','move','object','drag']],
+   ['Direct Selection Tool','A',['anchor','point','path','select','node']],
+   ['Magic Wand','Y',['magic wand','select similar','fill color','stroke']],
+   ['Lasso Tool','Q',['lasso','select','freehand','rubber band']],
+   ['Artboard Tool','Shift+O',['artboard','canvas','page','document bounds']],
+   ['Pen Tool','P',['pen','path','vector','bezier','draw','anchor','point']],
+   ['Add Anchor Point','=',['anchor','add','pen','node','point']],
+   ['Delete Anchor Point','–',['anchor','delete','remove','node','simplify']],
+   ['Convert Anchor Point (smooth/corner)','Shift+C',['anchor','convert','smooth','corner','direction']],
+   ['Curvature Tool','Shift+~',['curve','draw','smooth','simple pen']],
+   ['Type Tool','T',['text','type','font','write','title','label']],
+   ['Line Segment Tool','\\',['line','draw','straight','ruler']],
+   ['Rectangle Tool','M',['rectangle','square','shape','draw']],
+   ['Ellipse Tool','L',['ellipse','circle','oval','shape','draw']],
+   ['Paintbrush Tool','B',['brush','paint','calligraphy','draw']],
+   ['Blob Brush Tool','Shift+B',['blob','brush','merge','fill','draw']],
+   ['Pencil Tool','N',['pencil','draw','freehand','sketch']],
+   ['Eraser Tool','Shift+E',['erase','delete','remove','cut shape']],
+   ['Rotate Tool','R',['rotate','spin','transform','angle']],
+   ['Reflect Tool','O',['reflect','flip','mirror','symmetric']],
+   ['Scale Tool','S',['scale','resize','transform','enlarge','shrink']],
+   ['Width Tool','Shift+W',['width','stroke','variable','taper']],
+   ['Warp Tool','Shift+R',['warp','distort','push','liquify','twirl']],
+   ['Free Transform Tool','E',['free transform','resize','rotate','scale','distort']],
+   ['Gradient Tool','G',['gradient','fill','blend','color stop']],
+   ['Eyedropper Tool','I',['eyedropper','sample','pick color','copy appearance']],
+   ['Blend Tool','W',['blend','morph','sequence','interpolate']],
+   ['Live Paint Bucket','K',['live paint','fill','color','region']],
+   ['Zoom Tool','Z',['zoom','magnify']],
+   ['Hand Tool','H',['pan','scroll','navigate','hand']],
+   ['Toggle Fill / Stroke','X',['fill','stroke','swap','toggle','active']],
+   ['Default Fill / Stroke','D',['default','black','fill','stroke','reset']],
+   ['Swap Fill and Stroke','Shift+X',['swap','fill','stroke','exchange']],
+   ['Remove fill or stroke','/ (slash)',['none','transparent','remove fill','no stroke']],
+  ]},
+  {t:'File',c:[
+   ['New','Ctrl+N',['new','create','document','blank']],
+   ['New from Template','Ctrl+Shift+N',['template','new','preset']],
+   ['Open','Ctrl+O',['open','file']],
+   ['Close','Ctrl+W',['close']],
+   ['Save','Ctrl+S',['save']],
+   ['Save As','Ctrl+Shift+S',['save as','rename','export']],
+   ['Save a Copy','Ctrl+Alt+S',['copy','save','backup']],
+   ['Save for Web / Export (Legacy)','Ctrl+Alt+Shift+S',['web','export','save for web','png','svg','gif','optimize']],
+   ['Revert','F12',['revert','discard','reset file']],
+   ['Place (import)','Ctrl+Shift+P',['place','import','link','embed','image']],
+   ['Export for Screens','Ctrl+Alt+E',['export','screens','assets','png','svg','multiple']],
+   ['Document Setup','Ctrl+Alt+P',['document','setup','artboard','size','bleed']],
+   ['Print','Ctrl+P',['print']],
+   ['Quit / Exit','Ctrl+Q',['quit','exit']],
+  ]},
+  {t:'Edit',c:[
+   ['Undo','Ctrl+Z',['undo']],
+   ['Redo','Ctrl+Shift+Z',['redo']],
+   ['Cut','Ctrl+X',['cut','clipboard']],
+   ['Copy','Ctrl+C',['copy','duplicate','clipboard']],
+   ['Paste','Ctrl+V',['paste']],
+   ['Paste in Front (above)','Ctrl+F',['paste','front','above','stack','in place']],
+   ['Paste in Back (behind)','Ctrl+B',['paste','back','behind','stack','below']],
+   ['Paste in Place','Ctrl+Shift+V',['paste','position','same location','register']],
+   ['Paste on All Artboards','Ctrl+Alt+Shift+V',['paste','artboard','all','every']],
+   ['Color Settings','Ctrl+Shift+K',['color settings','profile','ICC','color management']],
+   ['Keyboard Shortcuts editor','Ctrl+Alt+Shift+K',['shortcuts','keyboard','customize','remap']],
+   ['Preferences General','Ctrl+K',['preferences','settings']],
+  ]},
+  {t:'Object',c:[
+   ['Transform / Duplicate Again','Ctrl+D',['transform','repeat','again','duplicate','pattern','step repeat']],
+   ['Bring to Front','Ctrl+Shift+]',['front','stack','order','arrange','top']],
+   ['Bring Forward one step','Ctrl+]',['forward','stack','order','arrange','up']],
+   ['Send Backward one step','Ctrl+[',['backward','stack','order','arrange','down']],
+   ['Send to Back','Ctrl+Shift+[',['back','stack','order','arrange','bottom']],
+   ['Group objects','Ctrl+G',['group','combine','organize','nest']],
+   ['Ungroup objects','Ctrl+Shift+G',['ungroup','separate','break apart']],
+   ['Lock Selection','Ctrl+2',['lock','protect','freeze','prevent moving']],
+   ['Unlock All','Ctrl+Alt+2',['unlock','unprotect','release locked']],
+   ['Hide Selection','Ctrl+3',['hide','invisible','visibility']],
+   ['Show All (hidden objects)','Ctrl+Alt+3',['show','reveal','visible','unhide']],
+   ['Join path endpoints','Ctrl+J',['join','connect','close path','merge endpoints']],
+   ['Make Clipping Mask','Ctrl+7',['clip','mask','clipping mask','hide','crop','cut out']],
+   ['Release Clipping Mask','Ctrl+Alt+7',['release','clip','mask','undo clip']],
+   ['Make Compound Path','Ctrl+8',['compound','path','combine','subtract','holes']],
+   ['Release Compound Path','Ctrl+Alt+8',['release','compound','path']],
+   ['Make Blend','Ctrl+Alt+B',['blend','morph','sequence','interpolate']],
+   ['Release Blend','Ctrl+Alt+Shift+B',['release','blend']],
+  ]},
+  {t:'Select',c:[
+   ['Select All','Ctrl+A',['select all','everything']],
+   ['Select All on Active Artboard','Ctrl+Alt+A',['select','artboard','current']],
+   ['Deselect All','Ctrl+Shift+A',['deselect','clear selection','none']],
+   ['Reselect (last selection)','Ctrl+6',['reselect','restore','previous selection']],
+   ['Select object above','Alt+Ctrl+]',['select','above','stack','next']],
+   ['Select object below','Alt+Ctrl+[',['select','below','stack','previous']],
+   ['Enter group / isolation mode','Double-click',['group','enter','isolate','edit inside']],
+   ['Exit group / isolation mode','Esc',['exit','group','isolate','leave']],
+  ]},
+  {t:'Type & Text',c:[
+   ['Align left','Ctrl+Shift+L',['left','align','text']],
+   ['Align center','Ctrl+Shift+C',['center','align','text','middle']],
+   ['Align right','Ctrl+Shift+R',['right','align','text']],
+   ['Justify','Ctrl+Shift+J',['justify','text','align','full']],
+   ['Justify all lines','Ctrl+Shift+F',['justify all','force justify','text']],
+   ['Increase font size','Ctrl+Shift+>',['font','size','bigger','larger','scale up']],
+   ['Decrease font size','Ctrl+Shift+<',['font','size','smaller','scale down']],
+   ['Increase leading (line height)','Alt+↓',['leading','line height','line spacing']],
+   ['Decrease leading (line height)','Alt+↑',['leading','line height','spacing','tighten']],
+   ['Increase kerning / tracking','Alt+→',['kerning','tracking','letter space','spread']],
+   ['Decrease kerning / tracking','Alt+←',['kerning','tracking','letter space','tighten']],
+   ['Reset kerning / tracking','Ctrl+Alt+Q',['reset','kerning','tracking','normal spacing']],
+   ['Increase baseline shift','Alt+Shift+↑',['baseline','raise','superscript','vertical']],
+   ['Decrease baseline shift','Alt+Shift+↓',['baseline','lower','subscript','vertical']],
+   ['Toggle All Caps','Ctrl+Shift+K',['caps','uppercase','all caps']],
+   ['Toggle Small Caps','Ctrl+Shift+H',['small caps','case']],
+   ['Superscript','Ctrl+Shift+=',['superscript','exponent','raise','footnote']],
+   ['Subscript','Ctrl+Alt+Shift+=',['subscript','lower','chemical formula']],
+   ['Toggle underline','Ctrl+Shift+U',['underline','format','text decoration']],
+   ['Toggle strikethrough','Ctrl+Shift+/',['strikethrough','format']],
+   ['Convert text to vector outlines','Ctrl+Shift+O',['outlines','convert text','vector','paths','editable']],
+   ['Character panel','Ctrl+T',['character','font','panel','type']],
+   ['Paragraph panel','Ctrl+Alt+T',['paragraph','indent','alignment','panel']],
+  ]},
+  {t:'View & Navigation',c:[
+   ['Zoom In','Ctrl+=',['zoom in','magnify']],
+   ['Zoom Out','Ctrl+–',['zoom out','shrink']],
+   ['Fit Artboard in Window','Ctrl+0',['fit','artboard','screen','overview']],
+   ['Fit All Artboards in Window','Ctrl+Alt+0',['fit all','artboards','overview']],
+   ['Actual Size (100%)','Ctrl+1',['100%','actual size','pixel','zoom']],
+   ['Show/Hide Bounding Box','Ctrl+Shift+B',['bounding box','handles','selection box','show']],
+   ['Show/Hide Rulers','Ctrl+R',['rulers','measure','distance']],
+   ['Show/Hide Guides','Ctrl+;',['guides','show','hide']],
+   ['Toggle Smart Guides (snapping)','Ctrl+U',['smart guides','snapping','alignment','hints']],
+   ['Show/Hide Grid','Ctrl+"',['grid','show','hide']],
+   ['Snap to Grid','Ctrl+Shift+"',['snap','grid','align']],
+   ['Outline / Preview toggle','Ctrl+Y',['outline','wireframe','preview','mode','vector view']],
+   ['Pixel Preview (raster view)','Ctrl+Alt+Y',['pixel','preview','raster','screen','72dpi']],
+   ['Toggle Screen Mode','F',['fullscreen','screen mode','presentation']],
+   ['Pan (temporary hand)','Space',['pan','navigate','scroll','hand']],
+  ]},
+  {t:'Panels & Windows',c:[
+   ['Color panel','F6',['color']],
+   ['Gradient panel','Ctrl+F9',['gradient','fill','ramp']],
+   ['Appearance panel','Shift+F6',['appearance','effects','multiple fills','strokes']],
+   ['Pathfinder panel','Ctrl+Shift+F9',['pathfinder','boolean','unite','subtract','intersect','exclude']],
+   ['Align panel','Shift+F7',['align','distribute','spacing','center','evenly']],
+   ['Transform panel','Shift+F8',['transform','position','size','rotate','shear']],
+   ['Stroke panel','Ctrl+F10',['stroke','weight','dash','cap','join','width']],
+   ['Brushes panel','F5',['brush','panel','calligraphy','art brush']],
+   ['Layers panel','F7',['layers','stack','visibility']],
+   ['Apply last effect','Ctrl+Shift+E',['effect','apply','repeat','filter']],
+   ['Apply last effect (with dialog)','Ctrl+Alt+Shift+E',['effect','dialog','settings']],
+   ['Hide all panels','Tab',['panels','hide','clean screen','distraction free']],
+  ]},
+ ]},
+ {id:'id',name:'InDesign',v:'CC 2024 — Win',cats:[
+  {t:'Tools',c:[
+   ['Selection Tool','V or Esc',['select','move','object','frame']],
+   ['Direct Selection Tool','A',['anchor','path','direct','point','node']],
+   ['Page Tool','Shift+P',['page','artboard','master','spread']],
+   ['Gap Tool','U',['gap','spacing','adjust','columns','between']],
+   ['Type Tool','T',['text','type','write','frame','story']],
+   ['Type on a Path Tool','Shift+T',['type on path','text','curved','arch']],
+   ['Line Tool','\\',['line','draw','rule']],
+   ['Pen Tool','P',['pen','path','vector','bezier','draw','anchor']],
+   ['Add Anchor Point','=',['anchor','add']],
+   ['Delete Anchor Point','–',['anchor','delete','simplify']],
+   ['Convert Direction Point','Shift+C',['anchor','convert','corner','smooth']],
+   ['Pencil Tool','N',['pencil','draw','freehand']],
+   ['Rectangle Frame Tool','F',['frame','container','image','place','placeholder']],
+   ['Rectangle Tool','M',['rectangle','shape','box']],
+   ['Ellipse Tool','L',['ellipse','circle','oval','shape']],
+   ['Scissors Tool','C',['scissors','cut','split','open path']],
+   ['Rotate Tool','R',['rotate','spin','transform']],
+   ['Scale Tool','S',['scale','resize','transform']],
+   ['Gradient Swatch Tool','G',['gradient','fill','blend']],
+   ['Gradient Feather Tool','Shift+G',['gradient feather','fade','transparency','vignette']],
+   ['Eyedropper Tool','I',['eyedropper','sample','pick','copy style']],
+   ['Hand Tool','H',['pan','scroll','navigate']],
+   ['Zoom Tool','Z',['zoom','magnify']],
+   ['Toggle Fill / Stroke','X',['fill','stroke','swap']],
+   ['Apply Color (last used)',', (comma)',['color','fill','apply']],
+   ['Apply Gradient','. (period)',['gradient','fill','apply']],
+   ['Apply None','/ (slash)',['none','remove fill','transparent']],
+   ['Toggle Preview Mode','W',['preview','bleed','slug','mode','normal view']],
+  ]},
+  {t:'File',c:[
+   ['New Document','Ctrl+N',['new','document','create']],
+   ['Open','Ctrl+O',['open','file']],
+   ['Close','Ctrl+W',['close']],
+   ['Save','Ctrl+S',['save']],
+   ['Save As','Ctrl+Shift+S',['save as','rename']],
+   ['Save a Copy','Ctrl+Alt+S',['copy','save']],
+   ['Revert','F12',['revert','discard','reset']],
+   ['Place (import image or text)','Ctrl+D',['place','import','link','embed','image','text','word']],
+   ['Export (PDF, EPUB, etc)','Ctrl+E',['export','pdf','epub','html','output']],
+   ['Document Setup','Ctrl+Alt+P',['document','setup','page size','margins','bleed','columns']],
+   ['Print','Ctrl+P',['print']],
+   ['Preflight (errors check)','Ctrl+Alt+Shift+F',['preflight','check','errors','warnings','missing fonts','overset']],
+   ['Package (collect all)','Ctrl+Alt+Shift+K',['package','collect','links','fonts','archive']],
+   ['Quit / Exit','Ctrl+Q',['quit','exit']],
+  ]},
+  {t:'Edit',c:[
+   ['Undo','Ctrl+Z',['undo']],
+   ['Redo','Ctrl+Shift+Z',['redo']],
+   ['Cut','Ctrl+X',['cut']],
+   ['Copy','Ctrl+C',['copy']],
+   ['Paste','Ctrl+V',['paste']],
+   ['Paste Without Formatting','Ctrl+Shift+V',['paste','plain text','no formatting','strip']],
+   ['Paste in Place (same position)','Ctrl+Alt+Shift+V',['paste','position','in place','register']],
+   ['Paste Into frame','Ctrl+Alt+V',['paste into','frame','container','inside']],
+   ['Duplicate','Ctrl+Alt+D',['duplicate','copy in place','repeat']],
+   ['Step and Repeat','Ctrl+Alt+U',['step repeat','duplicate grid','array','matrix','multiple copies']],
+   ['Select All','Ctrl+A',['select all','everything']],
+   ['Deselect All','Ctrl+Shift+A',['deselect','clear','none']],
+   ['Find / Change (search replace)','Ctrl+F',['find','replace','search','change','grep']],
+   ['Spell Check','Ctrl+I',['spell check','spelling','proofread']],
+   ['Edit in Story Editor','Ctrl+Y',['story editor','text editor','word processor view']],
+   ['Quick Apply (styles, commands)','Ctrl+Enter',['quick apply','style','character style','paragraph style','command']],
+   ['Preferences General','Ctrl+K',['preferences','settings']],
+  ]},
+  {t:'Layout & Pages',c:[
+   ['Go to First Page','Ctrl+Shift+Page Up',['first page','beginning','navigate','start']],
+   ['Go to Last Page','Ctrl+Shift+Page Down',['last page','end','navigate']],
+   ['Go to Next Page','Shift+Page Down',['next page','navigate','forward']],
+   ['Go to Previous Page','Shift+Page Up',['previous page','navigate','back']],
+   ['Go to Next Spread','Alt+Page Down',['spread','next','navigate']],
+   ['Go to Previous Spread','Alt+Page Up',['spread','previous','navigate']],
+   ['Go to Page (enter number)','Ctrl+J',['go to page','jump','page number','navigate']],
+  ]},
+  {t:'Object',c:[
+   ['Bring to Front','Ctrl+Shift+]',['front','stack','order','arrange','top']],
+   ['Bring Forward','Ctrl+]',['forward','stack','order','up','above']],
+   ['Send Backward','Ctrl+[',['backward','stack','order','down','below']],
+   ['Send to Back','Ctrl+Shift+[',['back','stack','order','bottom','behind']],
+   ['Group','Ctrl+G',['group','combine','nest']],
+   ['Ungroup','Ctrl+Shift+G',['ungroup','separate','break']],
+   ['Lock Position','Ctrl+L',['lock','freeze','protect','immovable']],
+   ['Unlock All on Spread','Ctrl+Alt+L',['unlock','unprotect','release locked']],
+   ['Hide','Ctrl+3',['hide','invisible','visibility','off']],
+   ['Show All','Ctrl+Alt+3',['show','reveal','unhide','visible']],
+   ['Fill Frame Proportionally','Ctrl+Alt+Shift+E',['fit','fill','proportional','image','fill frame','scale']],
+   ['Fit Content Proportionally','Ctrl+Alt+Shift+F',['fit','proportional','content','image','resize']],
+   ['Fit Frame to Content','Ctrl+Alt+C',['fit frame','auto size','content','resize frame']],
+   ['Fit Content to Frame','Ctrl+Alt+E',['fit content','stretch','fill frame','distort']],
+   ['Center Content in Frame','Ctrl+Alt+Shift+C',['center','content','frame','middle']],
+   ['Text Frame Options (columns, inset)','Ctrl+B',['text frame','columns','inset','offset','vertical align','options']],
+   ['Drop Shadow effect','Ctrl+Alt+M',['shadow','effects','drop shadow','depth']],
+   ['Transform Again','Ctrl+Alt+4',['transform','repeat','again']],
+   ['Clipping Path','Ctrl+Alt+Shift+K',['clip','clipping path','remove background','cutout','silhouette']],
+  ]},
+  {t:'Type & Text',c:[
+   ['Bold','Ctrl+Shift+B',['bold','weight','strong']],
+   ['Italic','Ctrl+Shift+I',['italic','oblique','slant']],
+   ['Underline','Ctrl+Shift+U',['underline','text decoration']],
+   ['Strikethrough','Ctrl+Shift+/',['strikethrough','delete text','cross out']],
+   ['All Caps','Ctrl+Shift+K',['caps','uppercase','all caps']],
+   ['Small Caps','Ctrl+Shift+H',['small caps','case']],
+   ['Superscript','Ctrl+Shift+=',['superscript','raise','exponent','trademark','footnote']],
+   ['Subscript','Ctrl+Alt+Shift+=',['subscript','lower','chemical','formula']],
+   ['Increase font size +2pt','Ctrl+Shift+>',['font size','bigger','larger']],
+   ['Decrease font size –2pt','Ctrl+Shift+<',['font size','smaller']],
+   ['Increase font size +10pt','Ctrl+Alt+Shift+>',['font size','bigger','large jump']],
+   ['Decrease font size –10pt','Ctrl+Alt+Shift+<',['font size','smaller','large jump']],
+   ['Increase leading','Alt+↓',['leading','line spacing','line height']],
+   ['Decrease leading','Alt+↑',['leading','line spacing','tighten']],
+   ['Auto leading','Ctrl+Alt+Shift+A',['auto leading','reset','automatic line spacing']],
+   ['Increase kerning / tracking','Alt+→',['kerning','tracking','letter spacing','spread']],
+   ['Decrease kerning / tracking','Alt+←',['kerning','tracking','letter spacing','tighten']],
+   ['Reset kerning / tracking to 0','Ctrl+Alt+Q',['reset','kerning','tracking','zero','normal']],
+   ['Increase baseline shift','Alt+Shift+↑',['baseline','raise','vertical position']],
+   ['Decrease baseline shift','Alt+Shift+↓',['baseline','lower','vertical position']],
+   ['Align left','Ctrl+Shift+L',['left','align']],
+   ['Align center','Ctrl+Shift+C',['center','align','middle']],
+   ['Align right','Ctrl+Shift+R',['right','align']],
+   ['Justify (last line left)','Ctrl+Shift+J',['justify','align','full justify']],
+   ['Justify all lines (force)','Ctrl+Shift+F',['justify all','force','every line']],
+   ['Character panel','Ctrl+T',['character','font','panel','type properties']],
+   ['Paragraph panel','Ctrl+Alt+T',['paragraph','indent','space before after','panel']],
+   ['Tabs panel','Ctrl+Shift+T',['tabs','indent','leader','panel']],
+   ['Story Editor (word processor view)','Ctrl+Y',['story editor','edit text','plain view']],
+   ['Show/Hide Hidden Characters','Ctrl+Alt+I',['hidden characters','formatting marks','pilcrow','paragraph mark','spaces','tabs']],
+  ]},
+  {t:'Styles',c:[
+   ['Paragraph Styles panel','F11',['paragraph style','panel','styles']],
+   ['Character Styles panel','Shift+F11',['character style','panel','inline styles']],
+   ['Apply style and clear overrides','Alt+click style',['apply style','overrides','clear','clean','revert style']],
+   ['Clear character style overrides','Ctrl+Alt+Shift+C',['clear','overrides','character style','reset formatting']],
+  ]},
+  {t:'View & Navigation',c:[
+   ['Zoom In','Ctrl+=',['zoom in']],
+   ['Zoom Out','Ctrl+–',['zoom out']],
+   ['Fit Page in Window','Ctrl+0',['fit','page','screen','overview']],
+   ['Fit Spread in Window','Ctrl+Alt+0',['fit','spread','two page']],
+   ['Actual Size (100%)','Ctrl+1',['100%','actual size','pixel accurate']],
+   ['Entire Pasteboard','Ctrl+Alt+Shift+0',['pasteboard','all','everything','overview']],
+   ['Show/Hide Rulers','Ctrl+R',['rulers','measure']],
+   ['Show/Hide Guides','Ctrl+;',['guides','show','ruler guides']],
+   ['Snap to Guides','Ctrl+Shift+;',['snap','guides','magnetic','align']],
+   ['Show/Hide Grid','Ctrl+"',['grid','baseline grid','document grid']],
+   ['Show/Hide Smart Guides','Ctrl+U',['smart guides','snapping','alignment hints']],
+   ['Show/Hide Frame Edges','Ctrl+H',['frame','edges','blue outlines','hide frames']],
+   ['Show/Hide Text Threads','Ctrl+Alt+Y',['text threads','flow','overset','link','columns']],
+   ['Presentation / Slideshow Mode','Shift+W',['presentation','slideshow','full screen','display']],
+   ['Pan (temporary hand tool)','Space',['pan','scroll','navigate','hand']],
+  ]},
+  {t:'Panels & Windows',c:[
+   ['Hide all panels','Tab',['panels','hide','clean screen','presentation']],
+   ['Align panel','Shift+F7',['align','distribute','center','evenly space']],
+   ['Character panel','Ctrl+T',['character','font','type']],
+   ['Color panel','F6',['color','swatch','picker']],
+   ['Effects panel','Ctrl+Shift+F10',['effects','transparency','blend mode','shadow','opacity']],
+   ['Info panel','F8',['info','coordinates','dimensions','measurements']],
+   ['Layers panel','F7',['layers','stack','visibility']],
+   ['Links panel','Ctrl+Shift+D',['links','images','placed files','embedded','update','relink']],
+   ['Pages panel','Ctrl+F12',['pages','spreads','master pages','navigate']],
+   ['Paragraph Styles panel','F11',['paragraph styles','text styles']],
+   ['Pathfinder panel','Ctrl+Shift+F9',['pathfinder','boolean','unite','subtract','intersect']],
+   ['Stroke panel','Ctrl+F10',['stroke','weight','dash','dotted','gap']],
+   ['Swatches panel','F5',['swatches','colors','palette','spot colors']],
+   ['Text Wrap panel','Ctrl+Alt+W',['text wrap','runaround','image wrap','avoid']],
+   ['Transform panel','F9',['transform','position','size','rotation','scale']],
+   ['Transparency panel','Shift+F10',['transparency','opacity','blend mode']],
+  ]},
+ ]},
+ {id:'pr',name:'Premiere Pro',v:'CC 2024 — Win',cats:[
+  {t:'Tools',c:[
+   ['Selection Tool','V',['select','move','object','clip']],
+   ['Track Select Forward Tool','A',['track','select forward','all clips right','bulk select']],
+   ['Track Select Backward Tool','Shift+A',['track','select backward','all left']],
+   ['Ripple Edit Tool','B',['ripple','edit','trim','no gap','close gap']],
+   ['Rolling Edit Tool','N',['rolling','edit','trim','both sides']],
+   ['Rate Stretch Tool','R',['rate stretch','speed','duration','time','slow','fast']],
+   ['Razor Tool','C',['razor','cut','split','divide','slice clip']],
+   ['Slip Tool','Y',['slip','trim','source','in out','content']],
+   ['Slide Tool','U',['slide','move clip','trim neighbors']],
+   ['Pen Tool','P',['pen','keyframe','mask','roto','draw']],
+   ['Hand Tool','H',['pan','scroll','timeline navigate']],
+   ['Zoom Tool','Z',['zoom','timeline','magnify','in out']],
+   ['Type Tool','T',['text','title','caption','lower third','graphics']],
+  ]},
+  {t:'File',c:[
+   ['New Project','Ctrl+Alt+N',['new','project','create','start']],
+   ['New Sequence','Ctrl+N',['sequence','timeline','new']],
+   ['New Bin','Ctrl+B',['bin','folder','organize','bucket']],
+   ['Open Project','Ctrl+O',['open','project']],
+   ['Close Project','Ctrl+Shift+W',['close','project']],
+   ['Save','Ctrl+S',['save']],
+   ['Save As','Ctrl+Shift+S',['save as','rename','copy']],
+   ['Import media','Ctrl+I',['import','add media','footage','file','ingest']],
+   ['Export Media (encode)','Ctrl+M',['export','render','output','encode','media encoder','mp4','h264','deliverable']],
+   ['Quit / Exit','Ctrl+Q',['quit','exit']],
+  ]},
+  {t:'Edit',c:[
+   ['Undo','Ctrl+Z',['undo']],
+   ['Redo','Ctrl+Shift+Z',['redo']],
+   ['Cut','Ctrl+X',['cut','clipboard']],
+   ['Copy','Ctrl+C',['copy','clipboard']],
+   ['Paste','Ctrl+V',['paste']],
+   ['Paste Attributes (effects, keyframes)','Ctrl+Alt+V',['paste attributes','copy effects','keyframes','motion','color']],
+   ['Paste Insert','Ctrl+Shift+V',['paste insert','ripple paste','push']],
+   ['Delete / Clear clip','Delete or Backspace',['delete','remove','clear','trash clip']],
+   ['Ripple Delete (close gap)','Shift+Delete',['ripple delete','remove','gap','close','delete gap']],
+   ['Duplicate clip','Ctrl+Shift+/',['duplicate','copy clip','repeat']],
+   ['Select All','Ctrl+A',['select all','everything']],
+   ['Deselect All','Ctrl+Shift+A',['deselect','clear selection']],
+   ['Find in Project','Ctrl+F',['find','search','locate','project panel']],
+   ['Keyboard Shortcuts editor','Ctrl+Alt+K',['shortcuts','keyboard','customize','remap']],
+  ]},
+  {t:'Playback & Transport',c:[
+   ['Play / Pause','Space or K',['play','pause','toggle','start stop','transport']],
+   ['Play Forward (JKL)','L',['play forward','jog','shuttle','forward','right']],
+   ['Play Backward (JKL)','J',['play backward','reverse','rewind','shuttle','left']],
+   ['Speed up forward','L (press again)',['speed','faster','2x','fast forward','shuttle']],
+   ['Speed up backward','J (press again)',['speed','faster','rewind','shuttle']],
+   ['Stop / freeze','K',['stop','freeze','pause','hold']],
+   ['Step Forward 1 frame','→ (right arrow)',['frame','step','forward','one frame','advance']],
+   ['Step Backward 1 frame','← (left arrow)',['frame','step','backward','one frame','go back']],
+   ['Step Forward 5 frames','Shift+→',['5 frames','step','forward','jump']],
+   ['Step Backward 5 frames','Shift+←',['5 frames','step','backward','jump']],
+   ['Go to sequence beginning','Home',['beginning','start','head','first frame']],
+   ['Go to sequence end','End',['end','tail','last frame']],
+   ['Go to In Point','Q',['in point','start','beginning','navigate','jump']],
+   ['Go to Out Point','W',['out point','end','navigate','jump']],
+   ['Go to Next Edit Point','Page Down or ↓',['next edit','cut point','navigate','next clip']],
+   ['Go to Previous Edit Point','Page Up or ↑',['previous edit','navigate','back','last clip']],
+   ['Slow shuttle forward','K+L (hold)',['slow','shuttle','forward','creep','fine']],
+   ['Slow shuttle backward','J+K (hold)',['slow','shuttle','backward','creep','fine']],
+   ['Loop / repeat playback','Ctrl+L',['loop','repeat','cycle','playback']],
+   ['Full screen playback','` (backtick)',['full screen','preview','monitor','full res']],
+  ]},
+  {t:'Markers & In/Out',c:[
+   ['Mark In (set start point)','I',['in point','mark in','set in','start','begin']],
+   ['Mark Out (set end point)','O',['out point','mark out','set out','end','finish']],
+   ['Clear In Point','Ctrl+Shift+I',['clear in','remove in','delete in point']],
+   ['Clear Out Point','Ctrl+Shift+O',['clear out','remove out','delete out point']],
+   ['Clear In and Out','Ctrl+Shift+X',['clear','in out','remove both','reset range']],
+   ['Add Marker','M',['marker','add','flag','note','chapter','comment']],
+   ['Go to Next Marker','Shift+M',['next marker','navigate','jump to']],
+   ['Go to Previous Marker','Ctrl+Shift+M',['previous marker','navigate','back']],
+   ['Clear Current Marker','Ctrl+M',['clear marker','remove marker','delete']],
+   ['Clear All Markers','Ctrl+Alt+M',['clear all markers','remove all','delete all']],
+   ['Set In/Out to surround clip','X',['in out','clip','set','surround','wrap']],
+   ['Mark Selection as In/Out','/ (slash)',['mark','selection','in out','range']],
+   ['Match Frame (source)','F',['match frame','source','find original','sync','locate']],
+   ['Reveal clip in Project','Shift+F',['reveal','project','find','locate clip']],
+  ]},
+  {t:'Timeline Editing',c:[
+   ['Lift (remove, leave gap)','; (semicolon)',['lift','remove','leave gap','delete segment']],
+   ["Extract (remove, close gap)","' (apostrophe)",['extract','delete','close gap','ripple delete','remove segment']],
+   ['Insert clip at playhead',', (comma)',['insert','add clip','push','ripple','edit point']],
+   ['Overwrite clip at playhead','. (period)',['overwrite','replace','overlay','edit point']],
+   ['Ripple Trim Previous Edit to Playhead','Q',['ripple trim','trim to playhead','shorten','extend']],
+   ['Ripple Trim Next Edit to Playhead','W',['ripple trim','trim to playhead','shorten','extend']],
+   ['Trim Previous Edit –1 frame','Ctrl+←',['trim','nudge','1 frame','fine tune']],
+   ['Trim Next Edit +1 frame','Ctrl+→',['trim','nudge','1 frame','fine tune']],
+   ['Trim Previous Edit –5 frames','Ctrl+Shift+←',['trim','nudge','5 frames','jump']],
+   ['Trim Next Edit +5 frames','Ctrl+Shift+→',['trim','nudge','5 frames','jump']],
+   ['Extend selected edit to playhead','T',['extend','edit','trim','to playhead']],
+   ['Razor (cut) all tracks at playhead','Ctrl+K',['razor','cut','split','all tracks','divide']],
+   ['Enable/Disable selected clip','Shift+E',['enable','disable','toggle','hide clip','mute video']],
+   ['Link / Unlink audio and video','Ctrl+L',['link','unlink','audio video','sync','decouple']],
+   ['Group clips','Ctrl+G',['group','combine','cluster']],
+   ['Ungroup clips','Ctrl+Shift+G',['ungroup','separate','split group']],
+   ['Apply Video Transition','Ctrl+D',['transition','video','crossfade','dissolve','cut between']],
+   ['Apply Audio Transition','Ctrl+Shift+D',['transition','audio','crossfade','constant power']],
+   ['Apply Default Transitions to Selection','Shift+D',['transition','selection','default','batch']],
+   ['Toggle Snap','S',['snap','align','magnetic','grid','toggle']],
+   ['Zoom timeline in','= (equals)',['zoom','timeline','closer','detail']],
+   ['Zoom timeline out','– (minus)',['zoom','timeline','out','overview']],
+   ['Zoom to fit full sequence','\\',['fit','sequence','timeline','full view','overview']],
+   ['Render In to Out','Enter',['render','preview','green bar','playback','process']],
+   ['Render only effect areas','Shift+Enter',['render','effects','yellow bar','preview']],
+  ]},
+  {t:'Audio',c:[
+   ['Audio Gain dialog','G',['gain','volume','audio','normalize','db','level','boost']],
+   ['Increase clip volume','] (right bracket)',['volume','louder','up','audio','raise']],
+   ['Decrease clip volume','[ (left bracket)',['volume','quieter','down','audio','lower']],
+   ['Increase clip volume +1 dB','Shift+]',['volume','1db','fine','audio']],
+   ['Decrease clip volume –1 dB','Shift+[',['volume','1db','fine','audio']],
+   ['Link / Unlink audio and video','Ctrl+L',['link','audio','video','sync','separate','decouple']],
+   ['Audio Track Mixer panel','Shift+9',['audio mixer','track','mixing','panel','eq','send']],
+  ]},
+  {t:'Effects & Color',c:[
+   ['Effects panel','Shift+7',['effects','panel','filters','plug-ins','video effects']],
+   ['Effect Controls panel','Shift+5',['effect controls','panel','keyframes','motion','opacity','parameters']],
+   ['Reset an effect parameter','Double-click parameter',['reset','default','effect','parameter','undo value']],
+   ['Enable / Disable effect','Click fx button',['toggle','effect','disable','bypass','enable']],
+  ]},
+  {t:'Panels & Windows',c:[
+   ['Project panel','Shift+1',['project','panel','media','bins','clips']],
+   ['Source Monitor','Shift+2',['source','monitor','panel','preview clip']],
+   ['Timeline panel','Shift+3',['timeline','panel','sequence']],
+   ['Program Monitor','Shift+4',['program','monitor','panel','output preview','playback']],
+   ['Effect Controls panel','Shift+5',['effect controls','parameters','keyframes']],
+   ['Effects panel','Shift+7',['effects','filter','plug-in']],
+   ['Media Browser','Shift+8',['media browser','files','import','ingest']],
+   ['Audio Track Mixer','Shift+9',['audio mixer','level','pan','fader']],
+   ['Capture panel','F5',['capture','tape','ingest','digitize']],
+   ['Maximize / restore panel under cursor','` (backtick)',['maximize','panel','full size','toggle size']],
+   ['Hide all panels','Tab',['panels','hide','clean','full screen']],
+  ]},
+ ]},
+];
+
+// ── state
+let curApp='all', curTag=null;
+
+// ── anchor id
+function aid(appId,cat){return(appId+'-'+cat).replace(/[^a-z0-9]/gi,'-').toLowerCase()}
+
+// ── format shortcut into kbd chips
+function fmtKey(s){
+  return s.split(' / ').map((part,pi,arr)=>{
+    const keys=part.split('+');
+    const html=keys.map((k,ki)=>`<kbd>${k.trim()}</kbd>${ki<keys.length-1?'<span class="ksep">+</span>':''}`).join('');
+    return html+(pi<arr.length-1?`<span class="ksep"> / </span>`:'');
+  }).join('');
+}
+
+// ── render tags
+function fmtTags(tags){
+  if(!tags||!tags.length) return '';
+  return tags.map(t=>{
+    const on=curTag===t?'on':'';
+    const ts=t.replace(/'/g,"\\'");
+    return `<span class="tag ${on}" onclick="setTag('${ts}')">${t}</span>`;
+  }).join('');
+}
+
+// ── build sidebar
+function buildSB(filter){
+  const sb=document.getElementById('sb');
+  sb.innerHTML='';
+  const apps=filter==='all'?D:D.filter(a=>a.id===filter);
+  apps.forEach(app=>{
+    const blk=document.createElement('div');
+    blk.className='sb-app';
+    const lbl=document.createElement('div');
+    lbl.className=`sb-name ${app.id}`;
+    lbl.textContent=app.name;
+    blk.appendChild(lbl);
+    app.cats.forEach(cat=>{
+      const a=document.createElement('a');
+      a.href='#'+aid(app.id,cat.t);
+      a.className='sb-link';
+      a.textContent=cat.t;
+      a.addEventListener('click',()=>{
+        document.querySelectorAll('.sb-link').forEach(l=>l.className='sb-link');
+        a.classList.add('on-'+app.id);
+      });
+      blk.appendChild(a);
+    });
+    sb.appendChild(blk);
+  });
+}
+
+// ── build main
+function buildMain(filter,q){
+  const main=document.getElementById('main');
+  main.innerHTML='';
+  const apps=filter==='all'?D:D.filter(a=>a.id===filter);
+  const ql=(q||'').toLowerCase().trim();
+  let total=0;
+  apps.forEach(app=>{
+    const appDiv=document.createElement('div');
+    appDiv.className='app-sec';
+    appDiv.id='app-'+app.id;
+    appDiv.innerHTML=`<div class="app-head"><div class="app-bar ${app.id}"></div><div class="app-ttl-block"><div class="app-ttl">${app.name}<span class="app-ver">${app.v}</span></div></div></div>`;
+    let has=false;
+    app.cats.forEach(cat=>{
+      let cmds=cat.c;
+      if(curTag) cmds=cmds.filter(([n,s,tags])=>tags&&tags.some(t=>t.toLowerCase()===curTag.toLowerCase()));
+      if(ql) cmds=cmds.filter(([n,s,tags])=>n.toLowerCase().includes(ql)||s.toLowerCase().includes(ql)||(tags&&tags.some(t=>t.toLowerCase().includes(ql))));
+      if(!cmds.length) return;
+      has=true; total+=cmds.length;
+      const catDiv=document.createElement('div');
+      catDiv.className='cat';
+      catDiv.id=aid(app.id,cat.t);
+      const titleDiv=document.createElement('div');
+      titleDiv.className='cat-ttl';
+      titleDiv.textContent=cat.t;
+      catDiv.appendChild(titleDiv);
+      const tbl=document.createElement('table');
+      tbl.className='tbl';
+      cmds.forEach(([name,shortcut,tags])=>{
+        const tr=document.createElement('tr');
+        const n=document.createElement('td');
+        n.className='td-name';
+        n.innerHTML=ql?hlite(name,ql):name;
+        const k=document.createElement('td');
+        k.className='td-key';
+        k.innerHTML=fmtKey(shortcut);
+        const tg=document.createElement('td');
+        tg.className='td-tags';
+        tg.innerHTML=fmtTags(tags);
+        tr.appendChild(n);tr.appendChild(k);tr.appendChild(tg);
+        tbl.appendChild(tr);
+      });
+      catDiv.appendChild(tbl);
+      appDiv.appendChild(catDiv);
+    });
+    if(has) main.appendChild(appDiv);
+  });
+  if(!total){
+    const msg=curTag?`No commands tagged "${curTag}"${ql?` matching "${q}"`:''}`: `No commands found for "${q}"`;
+    main.innerHTML=`<div class="empty">${msg}</div>`;
+  }
+}
+
+function hlite(text,q){
+  const e=q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+  return text.replace(new RegExp(`(${e})`,'gi'),'<mark>$1</mark>');
+}
+
+function fApp(id,btn){
+  curApp=id;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  btn.classList.add('on');
+  buildMain(id,document.getElementById('si').value);
+  buildSB(id);
+}
+
+function setTag(tag){
+  curTag=(curTag===tag)?null:tag;
+  updateTagBar();
+  buildMain(curApp,document.getElementById('si').value);
+}
+
+function clrTag(){
+  curTag=null;
+  updateTagBar();
+  buildMain(curApp,document.getElementById('si').value);
+}
+
+function updateTagBar(){
+  const bar=document.getElementById('tagbar');
+  const lbl=document.getElementById('taglabel');
+  if(curTag){bar.classList.add('on');lbl.textContent=`Tag: ${curTag}`}
+  else{bar.classList.remove('on')}
+}
+
+function fSearch(v){buildMain(curApp,v)}
+
+buildMain('all','');
+buildSB('all');
+</script>
+</body>
+</html>
