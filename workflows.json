@@ -37,6 +37,28 @@
       ],
       "updatedAt": "2026-03-30T20:30:48.292Z",
       "updatedBy": "central11"
+    },
+    {
+      "id": "ad2b9aa3-9af9-44ad-aae2-d4cc8a726019",
+      "n": "Make a grey basemap have a colored tint",
+      "t": [
+        "color",
+        "basemap",
+        "tint",
+        "blending"
+      ],
+      "steps": [
+        {
+          "title": "Put a rectangle over your basemap in the color you want",
+          "command": "N/A"
+        },
+        {
+          "title": "Change blending mode to \"Color\"",
+          "command": "Window > Transparency > Blending Mode > Color"
+        }
+      ],
+      "updatedAt": "2026-03-30T20:56:24.400Z",
+      "updatedBy": "central11"
     }
   ],
   "id": [],
