@@ -782,26 +782,89 @@ const D=[
 // ── state
 let curApp='all', curTag=null;
 let wfUnlocked=false;
-let adminPassword='';
+let ghToken='';
 let customWF={};
+let workflowFileSha='';
 
-async function api(path,opts={}){
-  const cfg={...opts};
-  cfg.headers={...(opts.headers||{})};
-  if(opts.body!==undefined&&!cfg.headers['Content-Type']) cfg.headers['Content-Type']='application/json';
-  const res=await fetch(path,cfg);
-  let data=null;
-  try{data=await res.json();}catch(_){data=null;}
-  if(!res.ok){
-    const msg=(data&&data.error)?data.error:'Request failed';
-    throw new Error(msg);
-  }
-  return data;
+const ADMIN_PASSWORD='tokenaccess';
+const GH_OWNER='central11';
+const GH_REPO='adobe-commands';
+const GH_BRANCH='main';
+const GH_WORKFLOW_FILE='workflows.json';
+
+function ghFileUrl(){
+  return `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_WORKFLOW_FILE}`;
+}
+
+function b64EncodeUtf8(str){
+  return btoa(unescape(encodeURIComponent(str)));
+}
+
+function b64DecodeUtf8(str){
+  return decodeURIComponent(escape(atob(str)));
+}
+
+function mkId(){
+  if(window.crypto&&crypto.randomUUID) return crypto.randomUUID();
+  return `wf-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+}
+
+function normalizeWFStore(store){
+  const out={};
+  ['ps','ai','id','pr'].forEach(appId=>{
+    const src=Array.isArray(store&&store[appId])?store[appId]:[];
+    out[appId]=src.map(w=>({
+      id:w&&w.id?String(w.id):mkId(),
+      n:w&&w.n?String(w.n):'',
+      s:w&&w.s?String(w.s):'',
+      t:Array.isArray(w&&w.t)?w.t.map(v=>String(v)).filter(Boolean):[]
+    })).filter(w=>w.n&&w.s);
+  });
+  return out;
 }
 
 async function loadWF(){
-  const data=await api('/api/workflows');
-  customWF=(data&&typeof data==='object')?data:{};
+  const headers={Accept:'application/vnd.github+json'};
+  if(ghToken) headers.Authorization=`Bearer ${ghToken}`;
+  const res=await fetch(ghFileUrl(),{headers});
+  if(res.status===404){
+    workflowFileSha='';
+    customWF=normalizeWFStore({});
+    return;
+  }
+  if(!res.ok) throw new Error('Unable to load workflows from GitHub.');
+  const data=await res.json();
+  workflowFileSha=data.sha||'';
+  const raw=(data.content||'').replace(/\n/g,'');
+  const parsed=raw?JSON.parse(b64DecodeUtf8(raw)):{};
+  customWF=normalizeWFStore(parsed);
+}
+
+async function ensureGitHubToken(){
+  if(ghToken) return true;
+  const v=prompt('Enter GitHub token (repo scope) to save workflow changes:');
+  if(v===null) return false;
+  ghToken=v.trim();
+  return !!ghToken;
+}
+
+async function saveWF(commitMsg){
+  if(!await ensureGitHubToken()) throw new Error('GitHub token is required to save changes.');
+  const headers={
+    Accept:'application/vnd.github+json',
+    Authorization:`Bearer ${ghToken}`,
+    'Content-Type':'application/json'
+  };
+  const payload={
+    message:commitMsg,
+    content:b64EncodeUtf8(JSON.stringify(customWF,null,2)),
+    branch:GH_BRANCH
+  };
+  if(workflowFileSha) payload.sha=workflowFileSha;
+  const res=await fetch(ghFileUrl(),{method:'PUT',headers,body:JSON.stringify(payload)});
+  const data=await res.json();
+  if(!res.ok) throw new Error((data&&data.message)?data.message:'Unable to save workflows to GitHub.');
+  workflowFileSha=data&&data.content&&data.content.sha?data.content.sha:workflowFileSha;
 }
 
 function ensureWFApp(appId){
@@ -814,21 +877,11 @@ function getAppCats(app){
   return [...app.cats,{t:'Workflows',c:wfc}];
 }
 
-function authHdr(){
-  return {'x-admin-password':adminPassword};
-}
-
 async function verifyPwd(){
   const v=prompt('Enter workflow admin password:');
   if(v===null) return false;
-  try{
-    await api('/api/auth',{method:'POST',body:JSON.stringify({password:v})});
-    adminPassword=v;
-    return true;
-  }catch(_){
-    alert('Incorrect password.');
-    return false;
-  }
+  if(v!==ADMIN_PASSWORD){alert('Incorrect password.');return false;}
+  return true;
 }
 
 async function unlockWF(){
@@ -840,7 +893,7 @@ async function unlockWF(){
 
 function lockWF(){
   wfUnlocked=false;
-  adminPassword='';
+  ghToken='';
   rerender();
 }
 
@@ -852,11 +905,14 @@ async function addWF(appId){
   if(!s) return;
   const tg=(prompt('Tags (comma separated):')||'').split(',').map(t=>t.trim()).filter(Boolean);
   try{
-    await api(`/api/workflows/${appId}`,{method:'POST',headers:authHdr(),body:JSON.stringify({n,s,t:tg})});
-    await loadWF();
+    ensureWFApp(appId);
+    customWF[appId].push({id:mkId(),n,s,t:tg});
+    await saveWF(`Add workflow in ${appId}`);
     rerender();
   }catch(err){
     alert(err.message);
+    await loadWF();
+    rerender();
   }
 }
 
@@ -871,11 +927,13 @@ async function editWF(appId,wfId){
   if(!s) return;
   const tg=(prompt('Tags (comma separated):',(row.t||[]).join(', '))||'').split(',').map(t=>t.trim()).filter(Boolean);
   try{
-    await api(`/api/workflows/${appId}/${wfId}`,{method:'PUT',headers:authHdr(),body:JSON.stringify({n,s,t:tg})});
-    await loadWF();
+    row.n=n; row.s=s; row.t=tg;
+    await saveWF(`Edit workflow in ${appId}`);
     rerender();
   }catch(err){
     alert(err.message);
+    await loadWF();
+    rerender();
   }
 }
 
@@ -886,11 +944,13 @@ async function delWF(appId,wfId){
   if(!row) return;
   if(!confirm(`Delete workflow "${row.n}"?`)) return;
   try{
-    await api(`/api/workflows/${appId}/${wfId}`,{method:'DELETE',headers:authHdr()});
-    await loadWF();
+    customWF[appId]=customWF[appId].filter(w=>w.id!==wfId);
+    await saveWF(`Delete workflow in ${appId}`);
     rerender();
   }catch(err){
     alert(err.message);
+    await loadWF();
+    rerender();
   }
 }
 
@@ -1062,8 +1122,9 @@ function fSearch(v){buildMain(curApp,v)}
 async function init(){
   try{
     await loadWF();
-  }catch(_){
-    customWF={};
+  }catch(err){
+    customWF=normalizeWFStore({});
+    alert('Workflows could not be loaded from GitHub right now. You can still browse shortcuts.');
   }
   buildMain('all','');
   buildSB('all');
