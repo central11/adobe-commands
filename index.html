@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Adobe CS — Keyboard Reference</title>
 <style>
-  :root{--v-bg:#F5F0E8;--v-panel:#EDE8DF;--v-white:#FFFFFF;--v-ink:#1A1A1A;--v-muted:#5A5A5A;--v-red:#EE2E24;--v-orange:#F78B29;--v-yellow:#FCCC0A;--v-green:#00933C;--v-blue:#0039A6;--v-purple:#B933AD;--v-brown:#996633;--v-gray:#808183;--v-font:'Helvetica Neue','Arial',sans-serif;--v-mono:'Courier New',monospace;--bdr:1px solid #1A1A1A;--bdr-lt:1px solid #CCCCCC}
+  :root{--v-bg:#F5F0E8;--v-panel:#EDE8DF;--v-white:#FFFFFF;--v-ink:#1A1A1A;--v-muted:#5A5A5A;--v-red:#EE2E24;--v-orange:#F78B29;--v-yellow:#FCCC0A;--v-green:#00933C;--v-blue:#0039A6;--v-purple:#B933AD;--v-brown:#996633;--v-gray:#808183;--v-font:'Neue Haas Grotesk','Helvetica','Helvetica Neue','Arial',sans-serif;--v-mono:'Courier New',monospace;--bdr:1px solid #1A1A1A;--bdr-lt:1px solid #CCCCCC}
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
   body{font-family:var(--v-font);font-size:14px;background:var(--v-bg);color:var(--v-ink);line-height:1.5;-webkit-font-smoothing:antialiased}
   /* stripe */
@@ -67,8 +67,9 @@
   .wf-actions{display:flex;gap:6px;align-items:center;margin-left:8px;flex-wrap:wrap}
   .wf-meta{display:block;font-size:10px;color:var(--v-muted);margin-top:2px}
   .wf-row-main{display:block}
-  .wf-row{display:flex;align-items:center;justify-content:space-between;gap:8px}
-  .wf-row-acts{display:inline-flex;gap:4px;flex-shrink:0}
+  .wf-row{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+  .wf-row-main{flex:1;min-width:0}
+  .wf-row-acts{display:inline-flex;gap:4px;flex-shrink:0;align-self:flex-start}
   .wf-mini{background:transparent;border:1px solid #999;color:var(--v-muted);font-family:var(--v-font);font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:1px 6px;cursor:pointer}
   .wf-mini:hover{border-color:var(--v-ink);color:var(--v-ink)}
   .wf-mini.dup:hover{border-color:var(--v-blue);color:var(--v-blue)}
@@ -114,11 +115,11 @@
   .tbl tr:last-child{border-bottom:none}
   .tbl td{padding:6px 10px;vertical-align:top}
   .td-name{width:42%;font-size:13px}
-  .td-key{width:22%;text-align:right;white-space:nowrap}
+  .td-key{width:22%;text-align:left;white-space:nowrap}
   tr.wf-tr .td-key{text-align:left;white-space:normal}
   .td-tags{width:36%;padding-left:8px}
-  .wf-col-lines{display:flex;flex-direction:column;gap:5px}
-  .wf-col-line{min-height:22px;display:flex;align-items:center;flex-wrap:wrap;gap:6px}
+  .wf-col-lines{display:flex;flex-direction:column;gap:0}
+  .wf-col-line{min-height:26px;display:flex;align-items:center;flex-wrap:wrap;gap:6px;padding:2px 0}
   kbd{display:inline-block;background:var(--v-panel);border:1px solid #bbb;border-bottom-width:2px;color:var(--v-ink);font-family:var(--v-mono);font-size:10.5px;font-weight:700;padding:1px 5px;margin:1px 0;white-space:nowrap;line-height:1.6}
   .ksep{font-size:10px;color:#aaa;margin:0 1px}
   /* tags */
@@ -1535,7 +1536,7 @@ function buildMain(filter,q){
           wrap.className='wf-row';
           const nm=document.createElement('span');
           nm.className='wf-row-main';
-          nm.innerHTML=(ql?hlite(name,ql):name)+fmtWFMeta(updatedAt,updatedBy)+fmtWFStepNames(wfSteps);
+          nm.innerHTML=(ql?hlite(name,ql):name)+fmtWFMeta(updatedAt,updatedBy);
           wrap.appendChild(nm);
           const acts=document.createElement('span');
           acts.className='wf-row-acts';
@@ -1550,7 +1551,7 @@ function buildMain(filter,q){
         k.innerHTML=isWF?fmtWFStepHotkeys(wfSteps):fmtKey(shortcut);
         const tg=document.createElement('td');
         tg.className='td-tags';
-        tg.innerHTML=fmtTags(tags);
+        tg.innerHTML=isWF?fmtWFStepNames(wfSteps):fmtTags(tags);
         tr.appendChild(n);tr.appendChild(k);tr.appendChild(tg);
         tbl.appendChild(tr);
       });
