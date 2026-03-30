@@ -61,15 +61,27 @@
   .wf-btn{background:var(--v-white);border:1.5px solid var(--v-ink);color:var(--v-ink);font-family:var(--v-font);font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 8px;cursor:pointer}
   .wf-btn:hover{background:var(--v-ink);color:#fff}
   .wf-btn.on{background:var(--v-green);border-color:var(--v-green);color:#fff}
+  .mode-badge{display:inline-flex;align-items:center;padding:4px 8px;border:1.5px solid var(--v-ink);font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+  .mode-badge.locked{background:#f4d8d6;border-color:var(--v-red);color:#7c1a13}
+  .mode-badge.unlocked{background:#d9f1df;border-color:var(--v-green);color:#0f5a2b}
+  .wf-actions{display:flex;gap:6px;align-items:center;margin-left:8px;flex-wrap:wrap}
+  .wf-meta{display:block;font-size:10px;color:var(--v-muted);margin-top:2px}
+  .wf-row-main{display:block}
   .wf-row{display:flex;align-items:center;justify-content:space-between;gap:8px}
   .wf-row-acts{display:inline-flex;gap:4px;flex-shrink:0}
   .wf-mini{background:transparent;border:1px solid #999;color:var(--v-muted);font-family:var(--v-font);font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:1px 6px;cursor:pointer}
   .wf-mini:hover{border-color:var(--v-ink);color:var(--v-ink)}
+  .wf-mini.dup:hover{border-color:var(--v-blue);color:var(--v-blue)}
   .wf-steps{display:flex;flex-direction:column;align-items:stretch;gap:5px}
   .wf-step{display:flex;align-items:center;gap:6px;justify-content:flex-start;flex-wrap:wrap}
   .wf-step-idx{font-size:10px;color:var(--v-muted);min-width:16px;text-align:right}
   .wf-step-name{font-size:11px;color:var(--v-muted)}
   .wf-sum{font-size:11px;color:var(--v-muted)}
+  .wf-searchbar{display:flex;align-items:center;gap:8px;padding:8px 12px;border-bottom:1px solid #d0d0d0;background:#f7f4ef;flex-wrap:wrap}
+  .wf-searchbar input[type="text"]{background:var(--v-white);border:1.5px solid var(--v-ink);padding:5px 8px;font-family:var(--v-font);font-size:12px;width:280px;max-width:100%}
+  .wf-searchbar label{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--v-muted);font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+  .wf-searchbar button{background:var(--v-white);border:1.5px solid var(--v-ink);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:4px 7px;cursor:pointer}
+  .wf-searchbar button:hover{background:var(--v-ink);color:#fff}
   .modal{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;z-index:500;padding:18px}
   .modal.on{display:flex}
   .modal-card{width:min(740px,100%);max-height:90vh;overflow:auto;background:var(--v-white);border:2px solid var(--v-ink);padding:14px}
@@ -81,9 +93,13 @@
   .frm input,.frm select{width:100%;padding:7px 8px;border:1.5px solid var(--v-ink);font-family:var(--v-font);font-size:13px;background:var(--v-white)}
   .steps{display:flex;flex-direction:column;gap:8px}
   .step-editor{border:1px solid #cfcfcf;padding:8px;display:grid;grid-template-columns:1fr 1fr auto;gap:8px;align-items:end}
+  .step-editor.dragging{opacity:.45}
   .step-editor .step-n{grid-column:1/2}
   .step-editor .step-c{grid-column:2/3}
+  .step-editor .step-drag{grid-column:3/4}
   .step-editor .step-rm{grid-column:3/4}
+  .step-drag{background:transparent;border:1px solid #999;color:var(--v-muted);font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:4px 8px;cursor:grab;margin-bottom:4px}
+  .step-drag:active{cursor:grabbing}
   .step-rm{background:transparent;border:1px solid #999;color:var(--v-muted);font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:4px 8px;cursor:pointer}
   .step-rm:hover{border-color:var(--v-red);color:var(--v-red)}
   .frm-actions{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;padding-top:4px}
@@ -101,6 +117,8 @@
   .td-key{width:22%;text-align:right;white-space:nowrap}
   tr.wf-tr .td-key{text-align:left;white-space:normal}
   .td-tags{width:36%;padding-left:8px}
+  .wf-col-lines{display:flex;flex-direction:column;gap:5px}
+  .wf-col-line{min-height:22px;display:flex;align-items:center;flex-wrap:wrap;gap:6px}
   kbd{display:inline-block;background:var(--v-panel);border:1px solid #bbb;border-bottom-width:2px;color:var(--v-ink);font-family:var(--v-mono);font-size:10.5px;font-weight:700;padding:1px 5px;margin:1px 0;white-space:nowrap;line-height:1.6}
   .ksep{font-size:10px;color:#aaa;margin:0 1px}
   /* tags */
@@ -118,6 +136,11 @@
   .ft{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--v-muted)}
   .dots{display:flex;margin-left:auto}
   .dot{width:26px;height:26px;border-radius:50%;font-size:10px;font-weight:700;color:#fff;display:inline-flex;align-items:center;justify-content:center;margin-left:-4px;border:2px solid var(--v-bg)}
+  .toasts{position:fixed;right:14px;bottom:14px;z-index:700;display:flex;flex-direction:column;gap:8px;max-width:360px}
+  .toast{background:var(--v-ink);color:#fff;padding:8px 10px;border-left:4px solid #fff;font-size:12px}
+  .toast.ok{border-left-color:var(--v-green)}
+  .toast.err{border-left-color:var(--v-red)}
+  .toast.info{border-left-color:var(--v-blue)}
   ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--v-panel)}::-webkit-scrollbar-thumb{background:#bbb}
   @media(max-width:700px){.sb{display:none}.main{padding:14px}.td-tags{display:none}}
 </style>
@@ -131,6 +154,7 @@
 </div>
 <header>
   <div class="logo">Adobe CS <em>Keyboard Reference — Windows</em></div>
+  <span id="modeBadge" class="mode-badge locked">View Only</span>
   <div class="tabs">
     <button class="tab on" data-a="all" onclick="fApp('all',this)">All</button>
     <button class="tab" data-a="ps" onclick="fApp('ps',this)">Photoshop</button>
@@ -142,10 +166,20 @@
     <span class="srch-ico">⌕</span>
     <input type="text" id="si" placeholder="Search commands or tags…" oninput="fSearch(this.value)">
   </div>
+  <div class="wf-actions">
+    <button class="wf-btn" type="button" onclick="exportWorkflows()">Export Workflows</button>
+    <button class="wf-btn" type="button" onclick="triggerImportWorkflows()">Import Workflows</button>
+    <input id="wfImportFile" type="file" accept="application/json" style="display:none">
+  </div>
 </header>
 <div class="wrap">
   <nav class="sb" id="sb"></nav>
   <div style="flex:1;display:flex;flex-direction:column">
+    <div class="wf-searchbar">
+      <input id="wsi" type="text" placeholder="Search workflows (name, step, hotkey, tag)">
+      <label><input id="wfOnly" type="checkbox"> Workflow Only View</label>
+      <button type="button" onclick="clearWorkflowSearch()">Clear Workflow Search</button>
+    </div>
     <div class="tagbar" id="tagbar">
       <span id="taglabel"></span>
       <button class="tagbar-x" onclick="clrTag()">✕ Clear tag</button>
@@ -193,6 +227,10 @@
       </div>
       <div class="frm-actions" style="justify-content:flex-start">
         <button class="btn2" type="button" onclick="addStepEditor()">Add Step</button>
+        <select id="wfTemplate">
+          <option value="">Insert Step Template...</option>
+        </select>
+        <button class="btn2" type="button" onclick="insertTemplateSteps()">Insert Template</button>
       </div>
       <div class="frm-actions">
         <button class="btn2 red" id="wfDeleteBtn" type="button" onclick="deleteWFInModal()" style="display:none;margin-right:auto">Delete Workflow</button>
@@ -202,6 +240,7 @@
     </form>
   </div>
 </div>
+<div class="toasts" id="toasts"></div>
 <script>
 const D=[
  {id:'ps',name:'Photoshop',v:'CC 2024 — Win',cats:[
@@ -850,16 +889,107 @@ const D=[
 let curApp='all', curTag=null;
 let wfUnlocked=false;
 let ghToken='';
+let ghUser='';
 let customWF={};
 let workflowFileSha='';
 let wfDraftAppId='';
 let wfDraftId='';
+let wfDragEl=null;
 
 const ADMIN_PASSWORD='tokenaccess';
 const GH_OWNER='central11';
 const GH_REPO='adobe-commands';
 const GH_BRANCH='main';
 const GH_WORKFLOW_FILE='workflows.json';
+const WF_DRAFT_KEY='adobe-wf-draft-v1';
+const APP_NAME={ps:'Photoshop',ai:'Illustrator',id:'InDesign',pr:'Premiere Pro'};
+const WF_TEMPLATES={
+  ps:[
+    {name:'Retouch Quick Pass',steps:[
+      {title:'Duplicate active layer',command:'Ctrl+J'},
+      {title:'Run Spot Healing where needed',command:'J'},
+      {title:'Save and export copy',command:'Ctrl+Alt+S'}
+    ]}
+  ],
+  ai:[
+    {name:'Create Artboard Grid',steps:[
+      {title:'Draw a base rectangle',command:'M'},
+      {title:'Split into grid',command:'Object > Path > Split Into Grid'},
+      {title:'Convert to guides',command:'View > Guides > Make Guides'}
+    ]}
+  ],
+  id:[
+    {name:'Magazine Page Setup',steps:[
+      {title:'Create new document',command:'Ctrl+N'},
+      {title:'Set margins and columns',command:'Ctrl+Alt+P'},
+      {title:'Place content frame',command:'F'}
+    ]}
+  ],
+  pr:[
+    {name:'Quick Cut Assembly',steps:[
+      {title:'Import source clips',command:'Ctrl+I'},
+      {title:'Insert clip at playhead',command:', (comma)'},
+      {title:'Ripple trim rough edges',command:'Q / W'}
+    ]}
+  ]
+};
+
+function showToast(msg,type='info',ms=2600){
+  const box=document.getElementById('toasts');
+  if(!box) return;
+  const el=document.createElement('div');
+  el.className=`toast ${type}`;
+  el.textContent=msg;
+  box.appendChild(el);
+  setTimeout(()=>{if(el.parentNode) el.parentNode.removeChild(el);},ms);
+}
+
+function updateModeBadge(){
+  const b=document.getElementById('modeBadge');
+  if(!b) return;
+  b.className=`mode-badge ${wfUnlocked?'unlocked':'locked'}`;
+  b.textContent=wfUnlocked?'Edit Unlocked':'View Only';
+}
+
+function getDraft(){
+  try{
+    const raw=localStorage.getItem(WF_DRAFT_KEY);
+    return raw?JSON.parse(raw):null;
+  }catch(_){
+    return null;
+  }
+}
+
+function persistDraft(){
+  const m=document.getElementById('wfModal');
+  if(!m||!m.classList.contains('on')) return;
+  const rows=[...document.querySelectorAll('#wfSteps .step-editor')];
+  const steps=rows.map(r=>({
+    title:r.querySelector('.wf-step-title')?r.querySelector('.wf-step-title').value:'',
+    command:r.querySelector('.wf-step-command')?r.querySelector('.wf-step-command').value:''
+  }));
+  const draft={
+    appId:document.getElementById('wfApp').value,
+    wfId:wfDraftId||'',
+    name:document.getElementById('wfName').value,
+    tags:document.getElementById('wfTags').value,
+    steps,
+    ts:Date.now()
+  };
+  localStorage.setItem(WF_DRAFT_KEY,JSON.stringify(draft));
+}
+
+function clearDraft(){
+  localStorage.removeItem(WF_DRAFT_KEY);
+}
+
+async function fetchGitHubUser(){
+  if(!ghToken) return '';
+  const res=await fetch('https://api.github.com/user',{headers:{Authorization:`Bearer ${ghToken}`,Accept:'application/vnd.github+json'}});
+  if(!res.ok) return '';
+  const data=await res.json();
+  return data&&data.login?String(data.login):'';
+}
 
 function ghFileUrl(){
   return `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_WORKFLOW_FILE}`;
@@ -891,7 +1021,9 @@ function normalizeWFStore(store){
           command:st&&st.command?String(st.command):''
         })).filter(st=>st.title&&st.command)
         :((w&&w.s)?[{title:'Step 1',command:String(w.s)}]:[]),
-      t:Array.isArray(w&&w.t)?w.t.map(v=>String(v)).filter(Boolean):[]
+      t:Array.isArray(w&&w.t)?w.t.map(v=>String(v)).filter(Boolean):[],
+      updatedAt:w&&w.updatedAt?String(w.updatedAt):'',
+      updatedBy:w&&w.updatedBy?String(w.updatedBy):''
     })).filter(w=>w.n&&w.steps.length);
   });
   return out;
@@ -929,11 +1061,15 @@ async function ensureGitHubToken(){
   const v=prompt('Enter GitHub token (repo scope) to save workflow changes:');
   if(v===null) return false;
   ghToken=v.trim();
-  return !!ghToken;
+  if(!ghToken) return false;
+  ghUser=await fetchGitHubUser();
+  showToast('GitHub token accepted for this session.','ok');
+  return true;
 }
 
 async function saveWF(commitMsg){
   if(!ghToken) throw new Error('Unlock editing first to provide your GitHub token.');
+  showToast('Saving workflows to GitHub...','info',1400);
   const headers={
     Accept:'application/vnd.github+json',
     Authorization:`Bearer ${ghToken}`,
@@ -947,11 +1083,13 @@ async function saveWF(commitMsg){
     const data=await res.json();
     if(res.ok){
       workflowFileSha=data&&data.content&&data.content.sha?data.content.sha:workflowFileSha;
+      showToast('Saved to GitHub.','ok');
       return;
     }
     const msg=(data&&data.message)?data.message:'Unable to save workflows to GitHub.';
     const conflict=(res.status===409||res.status===422)&&/sha|expected|does not match/i.test(msg);
     if(conflict&&attempt===0){
+      showToast('Sync conflict detected, retrying...','info',1800);
       await refreshWorkflowSha();
       continue;
     }
@@ -970,7 +1108,9 @@ function getAppCats(app){
     (w.steps||[]).map(st=>st.command).join(' | '),
     w.t,
     w.id,
-    w.steps||[]
+    w.steps||[],
+    w.updatedAt||'',
+    w.updatedBy||''
   ]);
   return [...app.cats,{t:'Workflows',c:wfc}];
 }
@@ -988,12 +1128,17 @@ async function unlockWF(){
   if(!await ensureGitHubToken()) return;
   wfUnlocked=true;
   try{await loadWF();}catch(_){/* keep current view if reload fails */}
+  updateModeBadge();
+  showToast('Workflow edit unlocked.','ok');
   rerender();
 }
 
 function lockWF(){
   wfUnlocked=false;
   ghToken='';
+  ghUser='';
+  updateModeBadge();
+  showToast('Workflow edit locked.','info');
   rerender();
 }
 
@@ -1013,9 +1158,11 @@ async function delWF(appId,wfId){
   ensureWFApp(appId);
   const row=customWF[appId].find(w=>w.id===wfId);
   if(!row) return;
+  if(!confirm(`Delete workflow "${row.n}"?`)) return;
   try{
     customWF[appId]=customWF[appId].filter(w=>w.id!==wfId);
     await saveWF(`Delete workflow in ${appId}`);
+    showToast('Workflow deleted.','ok');
     rerender();
   }catch(err){
     alert(err.message);
@@ -1027,12 +1174,13 @@ async function delWF(appId,wfId){
 function stepEditorHtml(step={title:'',command:''}){
   const t=(step.title||'').replace(/"/g,'&quot;');
   const c=(step.command||'').replace(/"/g,'&quot;');
-  return `<div class="step-editor"><div class="step-n"><label>Step Name</label><input class="wf-step-title" type="text" value="${t}" maxlength="120" required></div><div class="step-c"><label>Command</label><input class="wf-step-command" type="text" value="${c}" maxlength="140" required></div><button class="step-rm" type="button" onclick="removeStepEditor(this)">Remove</button></div>`;
+  return `<div class="step-editor" draggable="true"><div class="step-n"><label>Step Name</label><input class="wf-step-title" type="text" value="${t}" maxlength="120" required></div><div class="step-c"><label>Hotkey / Command</label><input class="wf-step-command" type="text" value="${c}" maxlength="140" required></div><div><button class="step-drag" type="button" title="Drag to reorder">Drag</button><button class="step-rm" type="button" onclick="removeStepEditor(this)">Remove</button></div></div>`;
 }
 
 function addStepEditor(step){
   const root=document.getElementById('wfSteps');
   root.insertAdjacentHTML('beforeend',stepEditorHtml(step||{title:'',command:''}));
+  persistDraft();
 }
 
 function removeStepEditor(btn){
@@ -1040,6 +1188,7 @@ function removeStepEditor(btn){
   if(root.children.length<=1) return;
   const row=btn.closest('.step-editor');
   if(row) row.remove();
+  persistDraft();
 }
 
 function closeWFModal(){
@@ -1048,24 +1197,93 @@ function closeWFModal(){
   m.setAttribute('aria-hidden','true');
 }
 
+function trapModalTab(e){
+  const m=document.getElementById('wfModal');
+  if(!m.classList.contains('on')||e.key!=='Tab') return;
+  const f=[...m.querySelectorAll('button,[href],input,select,textarea,[tabindex]:not([tabindex="-1"])')].filter(el=>!el.disabled&&el.offsetParent!==null);
+  if(!f.length) return;
+  const first=f[0],last=f[f.length-1];
+  if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}
+  else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}
+}
+
+function getDragAfter(root,y){
+  const els=[...root.querySelectorAll('.step-editor:not(.dragging)')];
+  let closest={off:Number.NEGATIVE_INFINITY,el:null};
+  els.forEach(el=>{
+    const box=el.getBoundingClientRect();
+    const off=y-box.top-box.height/2;
+    if(off<0&&off>closest.off) closest={off,el};
+  });
+  return closest.el;
+}
+
+function setupStepDnD(){
+  const root=document.getElementById('wfSteps');
+  root.addEventListener('dragstart',e=>{
+    const row=e.target.closest('.step-editor');
+    if(!row) return;
+    wfDragEl=row;
+    row.classList.add('dragging');
+  });
+  root.addEventListener('dragend',()=>{
+    if(wfDragEl) wfDragEl.classList.remove('dragging');
+    wfDragEl=null;
+    persistDraft();
+  });
+  root.addEventListener('dragover',e=>{
+    e.preventDefault();
+    if(!wfDragEl) return;
+    const after=getDragAfter(root,e.clientY);
+    if(!after) root.appendChild(wfDragEl);
+    else root.insertBefore(wfDragEl,after);
+  });
+}
+
+function templateOptions(appId){
+  const sel=document.getElementById('wfTemplate');
+  sel.innerHTML='<option value="">Insert Step Template...</option>';
+  (WF_TEMPLATES[appId]||[]).forEach((t,i)=>{
+    const opt=document.createElement('option');
+    opt.value=String(i);
+    opt.textContent=t.name;
+    sel.appendChild(opt);
+  });
+}
+
+function insertTemplateSteps(){
+  const appId=document.getElementById('wfApp').value;
+  const idx=document.getElementById('wfTemplate').value;
+  if(idx==='') return;
+  const tpl=(WF_TEMPLATES[appId]||[])[Number(idx)];
+  if(!tpl) return;
+  tpl.steps.forEach(st=>addStepEditor(st));
+  persistDraft();
+}
+
 function openWFModal(appId,wfId){
   ensureWFApp(appId);
   wfDraftAppId=appId;
   wfDraftId=wfId||'';
   const row=wfDraftId?customWF[appId].find(w=>w.id===wfDraftId):null;
+  const draft=getDraft();
+  const useDraft=!row&&draft&&draft.appId===appId&&Array.isArray(draft.steps)&&draft.steps.length&&confirm('Restore your unsaved workflow draft?');
   document.getElementById('wfModalTitle').textContent=row?'Edit Workflow':'Add Workflow';
-  document.getElementById('wfApp').value=appId;
-  document.getElementById('wfName').value=row?row.n:'';
-  document.getElementById('wfTags').value=row?(row.t||[]).join(', '):'';
+  document.getElementById('wfApp').value=useDraft?draft.appId:appId;
+  document.getElementById('wfName').value=row?row.n:(useDraft?draft.name:'');
+  document.getElementById('wfTags').value=row?(row.t||[]).join(', '):(useDraft?draft.tags:'');
+  templateOptions(document.getElementById('wfApp').value);
   const steps=document.getElementById('wfSteps');
   steps.innerHTML='';
   if(row&&Array.isArray(row.steps)&&row.steps.length) row.steps.forEach(st=>addStepEditor(st));
+  else if(useDraft) draft.steps.forEach(st=>addStepEditor(st));
   else addStepEditor({title:'Step 1',command:''});
   const delBtn=document.getElementById('wfDeleteBtn');
   delBtn.style.display=row?'inline-block':'none';
   const m=document.getElementById('wfModal');
   m.classList.add('on');
   m.setAttribute('aria-hidden','false');
+  document.getElementById('wfName').focus();
 }
 
 async function saveWFModal(){
@@ -1082,11 +1300,14 @@ async function saveWFModal(){
     command:r.querySelector('.wf-step-command').value.trim()
   })).filter(st=>st.title&&st.command);
   if(!steps.length){alert('Add at least one step with name and command.');return;}
+  const now=new Date().toISOString();
   try{
     if(wfDraftId){
       const row=customWF[wfDraftAppId].find(w=>w.id===wfDraftId);
       if(!row) throw new Error('Workflow not found.');
       row.n=n; row.t=tags; row.steps=steps;
+      row.updatedAt=now;
+      row.updatedBy=ghUser||'unknown';
       if(targetAppId!==wfDraftAppId){
         customWF[wfDraftAppId]=customWF[wfDraftAppId].filter(w=>w.id!==wfDraftId);
         customWF[targetAppId].push(row);
@@ -1094,11 +1315,46 @@ async function saveWFModal(){
       }
       await saveWF(`Edit workflow in ${wfDraftAppId}`);
     }else{
-      customWF[targetAppId].push({id:mkId(),n,t:tags,steps});
+      customWF[targetAppId].push({id:mkId(),n,t:tags,steps,updatedAt:now,updatedBy:ghUser||'unknown'});
       await saveWF(`Add workflow in ${targetAppId}`);
       wfDraftAppId=targetAppId;
     }
+    clearDraft();
     closeWFModal();
+    rerender();
+  }catch(err){
+    alert(err.message);
+    showToast('Save failed.','err');
+    await loadWF();
+    rerender();
+  }
+}
+
+async function deleteWFInModal(){
+  if(!wfDraftId) return;
+  if(!confirm('Delete this workflow?')) return;
+  await delWF(wfDraftAppId,wfDraftId);
+  clearDraft();
+  closeWFModal();
+}
+
+async function duplicateWF(appId,wfId){
+  if(!wfUnlocked){alert('Click Unlock Workflow Edit first.');return;}
+  ensureWFApp(appId);
+  const row=customWF[appId].find(w=>w.id===wfId);
+  if(!row) return;
+  const copy={
+    id:mkId(),
+    n:`${row.n} Copy`,
+    t:[...(row.t||[])],
+    steps:(row.steps||[]).map(st=>({title:st.title,command:st.command})),
+    updatedAt:new Date().toISOString(),
+    updatedBy:ghUser||'unknown'
+  };
+  customWF[appId].push(copy);
+  try{
+    await saveWF(`Duplicate workflow in ${appId}`);
+    showToast('Workflow duplicated.','ok');
     rerender();
   }catch(err){
     alert(err.message);
@@ -1107,13 +1363,51 @@ async function saveWFModal(){
   }
 }
 
-async function deleteWFInModal(){
-  if(!wfDraftId) return;
-  await delWF(wfDraftAppId,wfDraftId);
-  closeWFModal();
+function exportWorkflows(){
+  const blob=new Blob([JSON.stringify(customWF,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  a.download='workflows.export.json';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+  showToast('Workflow export downloaded.','ok');
+}
+
+function triggerImportWorkflows(){
+  if(!wfUnlocked){alert('Unlock Workflow Edit first.');return;}
+  document.getElementById('wfImportFile').click();
+}
+
+async function importWorkflowsFromFile(file){
+  if(!file) return;
+  const text=await file.text();
+  let parsed={};
+  try{parsed=JSON.parse(text);}catch(_){alert('Invalid JSON file.');return;}
+  const normalized=normalizeWFStore(parsed);
+  if(!confirm('Replace current workflows with imported file?')) return;
+  customWF=normalized;
+  try{
+    await saveWF('Import workflows');
+    showToast('Workflows imported.','ok');
+    rerender();
+  }catch(err){
+    alert(err.message);
+    await loadWF();
+    rerender();
+  }
+}
+
+function clearWorkflowSearch(){
+  document.getElementById('wsi').value='';
+  document.getElementById('wfOnly').checked=false;
+  rerender();
 }
 
 function rerender(){
+  updateModeBadge();
   buildMain(curApp,document.getElementById('si').value);
   buildSB(curApp);
 }
@@ -1130,9 +1424,22 @@ function fmtKey(s){
   }).join('');
 }
 
-function fmtWFSteps(steps){
+function fmtWFStepNames(steps){
   if(!steps||!steps.length) return '<span class="wf-sum">No steps</span>';
-  return `<div class="wf-steps">${steps.map((st,i)=>`<div class="wf-step"><span class="wf-step-idx">${i+1}.</span><span class="wf-step-name">${st.title}</span>${fmtKey(st.command)}</div>`).join('')}</div>`;
+  return `<div class="wf-col-lines">${steps.map((st,i)=>`<div class="wf-col-line"><span class="wf-step-idx">${i+1}.</span><span class="wf-step-name">${st.title}</span></div>`).join('')}</div>`;
+}
+
+function fmtWFStepHotkeys(steps){
+  if(!steps||!steps.length) return '<span class="wf-sum">No hotkeys</span>';
+  return `<div class="wf-col-lines">${steps.map(st=>`<div class="wf-col-line">${fmtKey(st.command)}</div>`).join('')}</div>`;
+}
+
+function fmtWFMeta(updatedAt,updatedBy){
+  if(!updatedAt&&!updatedBy) return '';
+  const d=updatedAt?new Date(updatedAt):null;
+  const ts=d&&!Number.isNaN(d.getTime())?d.toLocaleString():updatedAt;
+  const by=updatedBy||'unknown';
+  return `<span class="wf-meta">Updated by ${by}${ts?` on ${ts}`:''}</span>`;
 }
 
 // ── render tags
@@ -1178,6 +1485,8 @@ function buildMain(filter,q){
   main.innerHTML='';
   const apps=filter==='all'?D:D.filter(a=>a.id===filter);
   const ql=(q||'').toLowerCase().trim();
+  const wq=(document.getElementById('wsi')?document.getElementById('wsi').value:'').toLowerCase().trim();
+  const wfOnly=document.getElementById('wfOnly')&&document.getElementById('wfOnly').checked;
   let total=0;
   apps.forEach(app=>{
     const appDiv=document.createElement('div');
@@ -1187,9 +1496,16 @@ function buildMain(filter,q){
     let has=false;
     getAppCats(app).forEach(cat=>{
       let cmds=cat.c;
+      const isWF=cat.t==='Workflows';
+      if(wfOnly&&!isWF) return;
       if(curTag) cmds=cmds.filter(([n,s,tags])=>tags&&tags.some(t=>t.toLowerCase()===curTag.toLowerCase()));
       if(ql) cmds=cmds.filter(([n,s,tags])=>n.toLowerCase().includes(ql)||s.toLowerCase().includes(ql)||(tags&&tags.some(t=>t.toLowerCase().includes(ql))));
-      const isWF=cat.t==='Workflows';
+      if(isWF&&wq){
+        cmds=cmds.filter(([n,s,tags,_wfId,wfSteps])=>{
+          const stepTxt=(wfSteps||[]).map(st=>`${st.title} ${st.command}`).join(' ').toLowerCase();
+          return n.toLowerCase().includes(wq)||s.toLowerCase().includes(wq)||(tags||[]).some(t=>t.toLowerCase().includes(wq))||stepTxt.includes(wq);
+        });
+      }
       if(!cmds.length&&!isWF) return;
       has=true; total+=cmds.length;
       const catDiv=document.createElement('div');
@@ -1209,7 +1525,7 @@ function buildMain(filter,q){
       }
       const tbl=document.createElement('table');
       tbl.className='tbl';
-      cmds.forEach(([name,shortcut,tags,wfId,wfSteps])=>{
+      cmds.forEach(([name,shortcut,tags,wfId,wfSteps,updatedAt,updatedBy])=>{
         const tr=document.createElement('tr');
         if(isWF) tr.classList.add('wf-tr');
         const n=document.createElement('td');
@@ -1218,11 +1534,12 @@ function buildMain(filter,q){
           const wrap=document.createElement('div');
           wrap.className='wf-row';
           const nm=document.createElement('span');
-          nm.innerHTML=ql?hlite(name,ql):name;
+          nm.className='wf-row-main';
+          nm.innerHTML=(ql?hlite(name,ql):name)+fmtWFMeta(updatedAt,updatedBy)+fmtWFStepNames(wfSteps);
           wrap.appendChild(nm);
           const acts=document.createElement('span');
           acts.className='wf-row-acts';
-          acts.innerHTML=`<button class="wf-mini" onclick="editWF('${app.id}','${wfId||''}')">Edit</button><button class="wf-mini" onclick="delWF('${app.id}','${wfId||''}')">Delete</button>`;
+          acts.innerHTML=`<button class="wf-mini" onclick="editWF('${app.id}','${wfId||''}')">Edit</button><button class="wf-mini dup" onclick="duplicateWF('${app.id}','${wfId||''}')">Duplicate</button><button class="wf-mini" onclick="delWF('${app.id}','${wfId||''}')">Delete</button>`;
           wrap.appendChild(acts);
           n.appendChild(wrap);
         }else{
@@ -1230,7 +1547,7 @@ function buildMain(filter,q){
         }
         const k=document.createElement('td');
         k.className='td-key';
-        k.innerHTML=isWF?fmtWFSteps(wfSteps):fmtKey(shortcut);
+        k.innerHTML=isWF?fmtWFStepHotkeys(wfSteps):fmtKey(shortcut);
         const tg=document.createElement('td');
         tg.className='td-tags';
         tg.innerHTML=fmtTags(tags);
@@ -1289,9 +1606,29 @@ async function init(){
     customWF=normalizeWFStore({});
     alert('Workflows could not be loaded from GitHub right now. You can still browse shortcuts.');
   }
+  updateModeBadge();
+  setupStepDnD();
   document.getElementById('wfForm').addEventListener('submit',async(e)=>{
     e.preventDefault();
     await saveWFModal();
+  });
+  document.getElementById('wfForm').addEventListener('input',persistDraft);
+  document.getElementById('wfApp').addEventListener('change',()=>{
+    templateOptions(document.getElementById('wfApp').value);
+    persistDraft();
+  });
+  document.getElementById('wsi').addEventListener('input',()=>rerender());
+  document.getElementById('wfOnly').addEventListener('change',()=>rerender());
+  document.getElementById('wfImportFile').addEventListener('change',async(e)=>{
+    const file=e.target.files&&e.target.files[0]?e.target.files[0]:null;
+    await importWorkflowsFromFile(file);
+    e.target.value='';
+  });
+  document.addEventListener('keydown',async(e)=>{
+    const m=document.getElementById('wfModal');
+    if(!m.classList.contains('on')) return;
+    if(e.key==='Escape'){e.preventDefault();closeWFModal();return;}
+    trapModalTab(e);
   });
   buildMain('all','');
   buildSB('all');
