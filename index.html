@@ -56,6 +56,15 @@
   /* category */
   .cat{margin-bottom:24px;scroll-margin-top:72px}
   .cat-ttl{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--v-muted);padding:5px 10px;background:var(--v-panel);border:var(--bdr);border-bottom:var(--bdr-lt)}
+  .cat-empty{padding:10px;border:var(--bdr);border-top:none;background:var(--v-white);color:var(--v-muted);font-size:12px}
+  .wf-ctrls{display:flex;align-items:center;gap:6px;margin-top:10px;flex-wrap:wrap}
+  .wf-btn{background:var(--v-white);border:1.5px solid var(--v-ink);color:var(--v-ink);font-family:var(--v-font);font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 8px;cursor:pointer}
+  .wf-btn:hover{background:var(--v-ink);color:#fff}
+  .wf-btn.on{background:var(--v-green);border-color:var(--v-green);color:#fff}
+  .wf-row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .wf-row-acts{display:inline-flex;gap:4px;flex-shrink:0}
+  .wf-mini{background:transparent;border:1px solid #999;color:var(--v-muted);font-family:var(--v-font);font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:1px 6px;cursor:pointer}
+  .wf-mini:hover{border-color:var(--v-ink);color:var(--v-ink)}
   /* table */
   .tbl{width:100%;border-collapse:collapse;background:var(--v-white);border:var(--bdr);border-top:none}
   .tbl tr{border-bottom:var(--bdr-lt);transition:background .08s}
@@ -772,6 +781,123 @@ const D=[
 
 // ── state
 let curApp='all', curTag=null;
+let wfUnlocked=false;
+let adminPassword='';
+let customWF={};
+
+async function api(path,opts={}){
+  const cfg={...opts};
+  cfg.headers={...(opts.headers||{})};
+  if(opts.body!==undefined&&!cfg.headers['Content-Type']) cfg.headers['Content-Type']='application/json';
+  const res=await fetch(path,cfg);
+  let data=null;
+  try{data=await res.json();}catch(_){data=null;}
+  if(!res.ok){
+    const msg=(data&&data.error)?data.error:'Request failed';
+    throw new Error(msg);
+  }
+  return data;
+}
+
+async function loadWF(){
+  const data=await api('/api/workflows');
+  customWF=(data&&typeof data==='object')?data:{};
+}
+
+function ensureWFApp(appId){
+  if(!Array.isArray(customWF[appId])) customWF[appId]=[];
+}
+
+function getAppCats(app){
+  ensureWFApp(app.id);
+  const wfc=customWF[app.id].map(w=>[w.n,w.s,w.t,w.id]);
+  return [...app.cats,{t:'Workflows',c:wfc}];
+}
+
+function authHdr(){
+  return {'x-admin-password':adminPassword};
+}
+
+async function verifyPwd(){
+  const v=prompt('Enter workflow admin password:');
+  if(v===null) return false;
+  try{
+    await api('/api/auth',{method:'POST',body:JSON.stringify({password:v})});
+    adminPassword=v;
+    return true;
+  }catch(_){
+    alert('Incorrect password.');
+    return false;
+  }
+}
+
+async function unlockWF(){
+  if(wfUnlocked) return;
+  if(!await verifyPwd()) return;
+  wfUnlocked=true;
+  rerender();
+}
+
+function lockWF(){
+  wfUnlocked=false;
+  adminPassword='';
+  rerender();
+}
+
+async function addWF(appId){
+  if(!wfUnlocked){if(!await verifyPwd()) return; wfUnlocked=true;}
+  const n=(prompt('Workflow name:')||'').trim();
+  if(!n) return;
+  const s=(prompt('Shortcut or steps:')||'').trim();
+  if(!s) return;
+  const tg=(prompt('Tags (comma separated):')||'').split(',').map(t=>t.trim()).filter(Boolean);
+  try{
+    await api(`/api/workflows/${appId}`,{method:'POST',headers:authHdr(),body:JSON.stringify({n,s,t:tg})});
+    await loadWF();
+    rerender();
+  }catch(err){
+    alert(err.message);
+  }
+}
+
+async function editWF(appId,wfId){
+  if(!wfUnlocked){if(!await verifyPwd()) return; wfUnlocked=true;}
+  ensureWFApp(appId);
+  const row=customWF[appId].find(w=>w.id===wfId);
+  if(!row) return;
+  const n=(prompt('Workflow name:',row.n)||'').trim();
+  if(!n) return;
+  const s=(prompt('Shortcut or steps:',row.s)||'').trim();
+  if(!s) return;
+  const tg=(prompt('Tags (comma separated):',(row.t||[]).join(', '))||'').split(',').map(t=>t.trim()).filter(Boolean);
+  try{
+    await api(`/api/workflows/${appId}/${wfId}`,{method:'PUT',headers:authHdr(),body:JSON.stringify({n,s,t:tg})});
+    await loadWF();
+    rerender();
+  }catch(err){
+    alert(err.message);
+  }
+}
+
+async function delWF(appId,wfId){
+  if(!wfUnlocked){if(!await verifyPwd()) return; wfUnlocked=true;}
+  ensureWFApp(appId);
+  const row=customWF[appId].find(w=>w.id===wfId);
+  if(!row) return;
+  if(!confirm(`Delete workflow "${row.n}"?`)) return;
+  try{
+    await api(`/api/workflows/${appId}/${wfId}`,{method:'DELETE',headers:authHdr()});
+    await loadWF();
+    rerender();
+  }catch(err){
+    alert(err.message);
+  }
+}
+
+function rerender(){
+  buildMain(curApp,document.getElementById('si').value);
+  buildSB(curApp);
+}
 
 // ── anchor id
 function aid(appId,cat){return(appId+'-'+cat).replace(/[^a-z0-9]/gi,'-').toLowerCase()}
@@ -807,7 +933,7 @@ function buildSB(filter){
     lbl.className=`sb-name ${app.id}`;
     lbl.textContent=app.name;
     blk.appendChild(lbl);
-    app.cats.forEach(cat=>{
+    getAppCats(app).forEach(cat=>{
       const a=document.createElement('a');
       a.href='#'+aid(app.id,cat.t);
       a.className='sb-link';
@@ -833,13 +959,14 @@ function buildMain(filter,q){
     const appDiv=document.createElement('div');
     appDiv.className='app-sec';
     appDiv.id='app-'+app.id;
-    appDiv.innerHTML=`<div class="app-head"><div class="app-bar ${app.id}"></div><div class="app-ttl-block"><div class="app-ttl">${app.name}<span class="app-ver">${app.v}</span></div></div></div>`;
+    appDiv.innerHTML=`<div class="app-head"><div class="app-bar ${app.id}"></div><div class="app-ttl-block"><div class="app-ttl">${app.name}<span class="app-ver">${app.v}</span></div><div class="wf-ctrls"><button class="wf-btn" onclick="addWF('${app.id}')">Add Workflow</button><button class="wf-btn ${wfUnlocked?'on':''}" onclick="${wfUnlocked?'lockWF()':'unlockWF()'}">${wfUnlocked?'Workflow Edit Unlocked':'Unlock Workflow Edit'}</button></div></div></div>`;
     let has=false;
-    app.cats.forEach(cat=>{
+    getAppCats(app).forEach(cat=>{
       let cmds=cat.c;
       if(curTag) cmds=cmds.filter(([n,s,tags])=>tags&&tags.some(t=>t.toLowerCase()===curTag.toLowerCase()));
       if(ql) cmds=cmds.filter(([n,s,tags])=>n.toLowerCase().includes(ql)||s.toLowerCase().includes(ql)||(tags&&tags.some(t=>t.toLowerCase().includes(ql))));
-      if(!cmds.length) return;
+      const isWF=cat.t==='Workflows';
+      if(!cmds.length&&!isWF) return;
       has=true; total+=cmds.length;
       const catDiv=document.createElement('div');
       catDiv.className='cat';
@@ -848,13 +975,36 @@ function buildMain(filter,q){
       titleDiv.className='cat-ttl';
       titleDiv.textContent=cat.t;
       catDiv.appendChild(titleDiv);
+      if(!cmds.length&&isWF){
+        const empty=document.createElement('div');
+        empty.className='cat-empty';
+        empty.textContent='No custom workflows yet. Use Add Workflow to create one.';
+        catDiv.appendChild(empty);
+        appDiv.appendChild(catDiv);
+        return;
+      }
       const tbl=document.createElement('table');
       tbl.className='tbl';
-      cmds.forEach(([name,shortcut,tags])=>{
+      cmds.forEach(([name,shortcut,tags,wfId])=>{
         const tr=document.createElement('tr');
         const n=document.createElement('td');
         n.className='td-name';
-        n.innerHTML=ql?hlite(name,ql):name;
+        if(isWF){
+          const wrap=document.createElement('div');
+          wrap.className='wf-row';
+          const nm=document.createElement('span');
+          nm.innerHTML=ql?hlite(name,ql):name;
+          wrap.appendChild(nm);
+          if(wfUnlocked){
+            const acts=document.createElement('span');
+            acts.className='wf-row-acts';
+            acts.innerHTML=`<button class="wf-mini" onclick="editWF('${app.id}','${wfId||''}')">Edit</button><button class="wf-mini" onclick="delWF('${app.id}','${wfId||''}')">Delete</button>`;
+            wrap.appendChild(acts);
+          }
+          n.appendChild(wrap);
+        }else{
+          n.innerHTML=ql?hlite(name,ql):name;
+        }
         const k=document.createElement('td');
         k.className='td-key';
         k.innerHTML=fmtKey(shortcut);
@@ -909,8 +1059,17 @@ function updateTagBar(){
 
 function fSearch(v){buildMain(curApp,v)}
 
-buildMain('all','');
-buildSB('all');
+async function init(){
+  try{
+    await loadWF();
+  }catch(_){
+    customWF={};
+  }
+  buildMain('all','');
+  buildSB('all');
+}
+
+init();
 </script>
 </body>
 </html>
