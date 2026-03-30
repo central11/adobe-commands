@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Adobe CS — Keyboard Reference</title>
 <style>
-  :root{--v-bg:#F5F0E8;--v-panel:#EDE8DF;--v-white:#FFFFFF;--v-ink:#1A1A1A;--v-muted:#5A5A5A;--v-red:#EE2E24;--v-orange:#F78B29;--v-yellow:#FCCC0A;--v-green:#00933C;--v-blue:#0039A6;--v-purple:#B933AD;--v-brown:#996633;--v-gray:#808183;--v-font:'Neue Haas Grotesk','Helvetica','Helvetica Neue','Arial',sans-serif;--v-mono:'Courier New',monospace;--bdr:1px solid #1A1A1A;--bdr-lt:1px solid #CCCCCC}
+  :root{--v-bg:#F5F0E8;--v-panel:#EDE8DF;--v-white:#FFFFFF;--v-ink:#1A1A1A;--v-muted:#5A5A5A;--v-red:#FF3366;--v-orange:#FF9A00;--v-yellow:#FCCC0A;--v-green:#00933C;--v-blue:#31A8FF;--v-purple:#B9B8FF;--v-brown:#996633;--v-gray:#808183;--v-font:'Neue Haas Grotesk','Helvetica','Helvetica Neue','Arial',sans-serif;--v-mono:'Courier New',monospace;--bdr:1px solid #1A1A1A;--bdr-lt:1px solid #CCCCCC}
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
   body{font-family:var(--v-font);font-size:14px;background:var(--v-bg);color:var(--v-ink);line-height:1.5;-webkit-font-smoothing:antialiased}
   /* stripe */
@@ -28,7 +28,7 @@
   /* search */
   .srch{margin-left:auto;position:relative}
   .srch input{background:var(--v-white);border:1.5px solid var(--v-ink);color:var(--v-ink);font-family:var(--v-font);font-size:13px;padding:6px 12px 6px 30px;width:240px;outline:none;transition:border-color .1s}
-  .srch input:focus{border-color:var(--v-blue);box-shadow:0 0 0 3px rgba(0,57,166,.12)}
+  .srch input:focus{border-color:var(--v-blue);box-shadow:0 0 0 3px rgba(49,168,255,.16)}
   .srch input::placeholder{color:#aaa}
   .srch-ico{position:absolute;left:9px;top:50%;transform:translateY(-50%);color:var(--v-muted);pointer-events:none}
   /* layout */
@@ -40,10 +40,10 @@
   .sb-name.ps{background:var(--v-blue)}.sb-name.ai{background:var(--v-orange)}.sb-name.id{background:var(--v-red)}.sb-name.pr{background:var(--v-purple)}
   .sb-link{display:block;padding:4px 12px;color:var(--v-muted);text-decoration:none;font-size:12px;border-left:3px solid transparent;transition:all .1s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .sb-link:hover{color:var(--v-ink);background:rgba(0,0,0,.05)}
-  .sb-link.on-ps{color:var(--v-blue);border-left-color:var(--v-blue);background:rgba(0,57,166,.06);font-weight:700}
-  .sb-link.on-ai{color:var(--v-orange);border-left-color:var(--v-orange);background:rgba(247,139,41,.08);font-weight:700}
-  .sb-link.on-id{color:var(--v-red);border-left-color:var(--v-red);background:rgba(238,46,36,.06);font-weight:700}
-  .sb-link.on-pr{color:var(--v-purple);border-left-color:var(--v-purple);background:rgba(185,51,173,.06);font-weight:700}
+  .sb-link.on-ps{color:var(--v-blue);border-left-color:var(--v-blue);background:rgba(49,168,255,.10);font-weight:700}
+  .sb-link.on-ai{color:var(--v-orange);border-left-color:var(--v-orange);background:rgba(255,154,0,.12);font-weight:700}
+  .sb-link.on-id{color:var(--v-red);border-left-color:var(--v-red);background:rgba(255,51,102,.10);font-weight:700}
+  .sb-link.on-pr{color:var(--v-purple);border-left-color:var(--v-purple);background:rgba(185,184,255,.12);font-weight:700}
   /* main */
   .main{flex:1;padding:28px 32px;overflow-x:hidden}
   .app-sec{margin-bottom:48px}
@@ -67,9 +67,9 @@
   .wf-actions{display:flex;gap:6px;align-items:center;margin-left:8px;flex-wrap:wrap}
   .wf-meta{display:block;font-size:10px;color:var(--v-muted);margin-top:2px}
   .wf-row-main{display:block}
-  .wf-row{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+  .wf-row{display:block}
   .wf-row-main{flex:1;min-width:0}
-  .wf-row-acts{display:inline-flex;gap:4px;flex-shrink:0;align-self:flex-start}
+  .wf-row-acts{display:inline-flex;gap:4px;flex-wrap:wrap;margin-top:6px}
   .wf-mini{background:transparent;border:1px solid #999;color:var(--v-muted);font-family:var(--v-font);font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:1px 6px;cursor:pointer}
   .wf-mini:hover{border-color:var(--v-ink);color:var(--v-ink)}
   .wf-mini.dup:hover{border-color:var(--v-blue);color:var(--v-blue)}
@@ -148,9 +148,9 @@
 </head>
 <body>
 <div class="stripe">
-  <span style="background:#EE2E24"></span><span style="background:#F78B29"></span>
+  <span style="background:#FF3366"></span><span style="background:#FF9A00"></span>
   <span style="background:#FCCC0A"></span><span style="background:#00933C"></span>
-  <span style="background:#0039A6"></span><span style="background:#B933AD"></span>
+  <span style="background:#31A8FF"></span><span style="background:#B9B8FF"></span>
   <span style="background:#996633"></span><span style="background:#808183"></span>
 </div>
 <header>
@@ -168,6 +168,7 @@
     <input type="text" id="si" placeholder="Search commands or tags…" oninput="fSearch(this.value)">
   </div>
   <div class="wf-actions">
+    <button class="wf-btn" type="button" onclick="addWorkflowFromHeader()">Add Workflow</button>
     <button class="wf-btn" type="button" onclick="exportWorkflows()">Export Workflows</button>
     <button class="wf-btn" type="button" onclick="triggerImportWorkflows()">Import Workflows</button>
     <input id="wfImportFile" type="file" accept="application/json" style="display:none">
@@ -189,10 +190,10 @@
     <footer>
       <div class="ft">Adobe Creative Suite CC 2024 — Windows</div>
       <div class="dots">
-        <span class="dot" style="background:#0039A6">PS</span>
-        <span class="dot" style="background:#F78B29">AI</span>
-        <span class="dot" style="background:#EE2E24">ID</span>
-        <span class="dot" style="background:#B933AD">PR</span>
+        <span class="dot" style="background:#31A8FF">PS</span>
+        <span class="dot" style="background:#FF9A00">AI</span>
+        <span class="dot" style="background:#FF3366">ID</span>
+        <span class="dot" style="background:#B9B8FF">PR</span>
       </div>
     </footer>
   </div>
@@ -1148,6 +1149,11 @@ async function addWF(appId){
   openWFModal(appId,'');
 }
 
+function addWorkflowFromHeader(){
+  const appId=curApp==='all'?'ps':curApp;
+  addWF(appId);
+}
+
 async function editWF(appId,wfId){
   if(!wfUnlocked){alert('Click Unlock Workflow Edit first.');return;}
   ensureWFApp(appId);
@@ -1493,7 +1499,7 @@ function buildMain(filter,q){
     const appDiv=document.createElement('div');
     appDiv.className='app-sec';
     appDiv.id='app-'+app.id;
-    appDiv.innerHTML=`<div class="app-head"><div class="app-bar ${app.id}"></div><div class="app-ttl-block"><div class="app-ttl">${app.name}<span class="app-ver">${app.v}</span></div><div class="wf-ctrls"><button class="wf-btn" onclick="addWF('${app.id}')">Add Workflow</button><button class="wf-btn ${wfUnlocked?'on':''}" onclick="${wfUnlocked?'lockWF()':'unlockWF()'}">${wfUnlocked?'Workflow Edit Unlocked':'Unlock Workflow Edit'}</button></div></div></div>`;
+    appDiv.innerHTML=`<div class="app-head"><div class="app-bar ${app.id}"></div><div class="app-ttl-block"><div class="app-ttl">${app.name}<span class="app-ver">${app.v}</span></div><div class="wf-ctrls"><button class="wf-btn ${wfUnlocked?'on':''}" onclick="${wfUnlocked?'lockWF()':'unlockWF()'}">${wfUnlocked?'Workflow Edit Unlocked':'Unlock Workflow Edit'}</button></div></div></div>`;
     let has=false;
     getAppCats(app).forEach(cat=>{
       let cmds=cat.c;
@@ -1536,12 +1542,8 @@ function buildMain(filter,q){
           wrap.className='wf-row';
           const nm=document.createElement('span');
           nm.className='wf-row-main';
-          nm.innerHTML=(ql?hlite(name,ql):name)+fmtWFMeta(updatedAt,updatedBy);
+          nm.innerHTML=(ql?hlite(name,ql):name)+fmtWFMeta(updatedAt,updatedBy)+`<span class="wf-row-acts"><button class="wf-mini" onclick="editWF('${app.id}','${wfId||''}')">Edit</button><button class="wf-mini dup" onclick="duplicateWF('${app.id}','${wfId||''}')">Duplicate</button><button class="wf-mini" onclick="delWF('${app.id}','${wfId||''}')">Delete</button></span>`;
           wrap.appendChild(nm);
-          const acts=document.createElement('span');
-          acts.className='wf-row-acts';
-          acts.innerHTML=`<button class="wf-mini" onclick="editWF('${app.id}','${wfId||''}')">Edit</button><button class="wf-mini dup" onclick="duplicateWF('${app.id}','${wfId||''}')">Duplicate</button><button class="wf-mini" onclick="delWF('${app.id}','${wfId||''}')">Delete</button>`;
-          wrap.appendChild(acts);
           n.appendChild(wrap);
         }else{
           n.innerHTML=ql?hlite(name,ql):name;
