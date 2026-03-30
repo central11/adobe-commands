@@ -1,1 +1,42 @@
-{}
+{
+  "ps": [
+    {
+      "id": "07ebfa7d-d4e4-407f-9a6e-ddfb5395c3bd",
+      "n": "Create a Grid",
+      "t": [
+        "grid",
+        "create",
+        "Illustrator"
+      ],
+      "steps": [
+        {
+          "title": "Draw a rectangle around the page",
+          "command": "M"
+        },
+        {
+          "title": "Offset the rectangle based on your margin/gutter",
+          "command": "Object > Path > Offset Path"
+        },
+        {
+          "title": "Create grid from new rectangle (make sure to select to add guides)",
+          "command": "Object > Path > Split Into Grid"
+        },
+        {
+          "title": "Delete non-guide parts of grid (guides will be grouped)",
+          "command": "Delete"
+        },
+        {
+          "title": "Highlight and ungroup guides",
+          "command": "Ctrl-Shift-G"
+        },
+        {
+          "title": "Make guides into official Illustrator Guides",
+          "command": "View > Guides > Make Guides"
+        }
+      ]
+    }
+  ],
+  "ai": [],
+  "id": [],
+  "pr": []
+}
