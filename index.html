@@ -65,6 +65,32 @@
   .wf-row-acts{display:inline-flex;gap:4px;flex-shrink:0}
   .wf-mini{background:transparent;border:1px solid #999;color:var(--v-muted);font-family:var(--v-font);font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:1px 6px;cursor:pointer}
   .wf-mini:hover{border-color:var(--v-ink);color:var(--v-ink)}
+  .wf-steps{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+  .wf-step{display:flex;align-items:center;gap:6px;justify-content:flex-end}
+  .wf-step-idx{font-size:10px;color:var(--v-muted);min-width:16px;text-align:right}
+  .wf-step-name{font-size:11px;color:var(--v-muted)}
+  .wf-sum{font-size:11px;color:var(--v-muted)}
+  .modal{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;z-index:500;padding:18px}
+  .modal.on{display:flex}
+  .modal-card{width:min(740px,100%);max-height:90vh;overflow:auto;background:var(--v-white);border:2px solid var(--v-ink);padding:14px}
+  .modal-head{display:flex;align-items:center;justify-content:space-between;gap:10px;border-bottom:2px solid var(--v-ink);padding-bottom:8px;margin-bottom:12px}
+  .modal-ttl{font-size:16px;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+  .modal-close{background:transparent;border:1.5px solid var(--v-ink);font-size:10px;font-weight:700;text-transform:uppercase;padding:3px 8px;cursor:pointer}
+  .frm{display:flex;flex-direction:column;gap:10px}
+  .frm label{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--v-muted)}
+  .frm input{width:100%;padding:7px 8px;border:1.5px solid var(--v-ink);font-family:var(--v-font);font-size:13px}
+  .steps{display:flex;flex-direction:column;gap:8px}
+  .step-editor{border:1px solid #cfcfcf;padding:8px;display:grid;grid-template-columns:1fr 1fr auto;gap:8px;align-items:end}
+  .step-editor .step-n{grid-column:1/2}
+  .step-editor .step-c{grid-column:2/3}
+  .step-editor .step-rm{grid-column:3/4}
+  .step-rm{background:transparent;border:1px solid #999;color:var(--v-muted);font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:4px 8px;cursor:pointer}
+  .step-rm:hover{border-color:var(--v-red);color:var(--v-red)}
+  .frm-actions{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;padding-top:4px}
+  .btn2{background:var(--v-white);border:1.5px solid var(--v-ink);color:var(--v-ink);font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:5px 9px;cursor:pointer}
+  .btn2:hover{background:var(--v-ink);color:#fff}
+  .btn2.red{border-color:var(--v-red);color:var(--v-red)}
+  .btn2.red:hover{background:var(--v-red);color:#fff}
   /* table */
   .tbl{width:100%;border-collapse:collapse;background:var(--v-white);border:var(--bdr);border-top:none}
   .tbl tr{border-bottom:var(--bdr-lt);transition:background .08s}
@@ -133,6 +159,37 @@
         <span class="dot" style="background:#B933AD">PR</span>
       </div>
     </footer>
+  </div>
+</div>
+
+<div class="modal" id="wfModal" aria-hidden="true">
+  <div class="modal-card">
+    <div class="modal-head">
+      <div class="modal-ttl" id="wfModalTitle">Workflow Editor</div>
+      <button class="modal-close" type="button" onclick="closeWFModal()">Close</button>
+    </div>
+    <form class="frm" id="wfForm">
+      <div>
+        <label for="wfName">Workflow Name</label>
+        <input id="wfName" type="text" maxlength="120" required>
+      </div>
+      <div>
+        <label for="wfTags">Tags (comma separated)</label>
+        <input id="wfTags" type="text" maxlength="240" placeholder="example: export, quick, social">
+      </div>
+      <div>
+        <label>Steps (each step gets its own command)</label>
+        <div class="steps" id="wfSteps"></div>
+      </div>
+      <div class="frm-actions" style="justify-content:flex-start">
+        <button class="btn2" type="button" onclick="addStepEditor()">Add Step</button>
+      </div>
+      <div class="frm-actions">
+        <button class="btn2 red" id="wfDeleteBtn" type="button" onclick="deleteWFInModal()" style="display:none;margin-right:auto">Delete Workflow</button>
+        <button class="btn2" type="button" onclick="closeWFModal()">Cancel</button>
+        <button class="btn2" type="submit">Save Workflow</button>
+      </div>
+    </form>
   </div>
 </div>
 <script>
@@ -785,6 +842,8 @@ let wfUnlocked=false;
 let ghToken='';
 let customWF={};
 let workflowFileSha='';
+let wfDraftAppId='';
+let wfDraftId='';
 
 const ADMIN_PASSWORD='tokenaccess';
 const GH_OWNER='central11';
@@ -816,9 +875,14 @@ function normalizeWFStore(store){
     out[appId]=src.map(w=>({
       id:w&&w.id?String(w.id):mkId(),
       n:w&&w.n?String(w.n):'',
-      s:w&&w.s?String(w.s):'',
+      steps:Array.isArray(w&&w.steps)
+        ?w.steps.map(st=>({
+          title:st&&st.title?String(st.title):'',
+          command:st&&st.command?String(st.command):''
+        })).filter(st=>st.title&&st.command)
+        :((w&&w.s)?[{title:'Step 1',command:String(w.s)}]:[]),
       t:Array.isArray(w&&w.t)?w.t.map(v=>String(v)).filter(Boolean):[]
-    })).filter(w=>w.n&&w.s);
+    })).filter(w=>w.n&&w.steps.length);
   });
   return out;
 }
@@ -849,7 +913,7 @@ async function ensureGitHubToken(){
 }
 
 async function saveWF(commitMsg){
-  if(!await ensureGitHubToken()) throw new Error('GitHub token is required to save changes.');
+  if(!ghToken) throw new Error('Unlock editing first to provide your GitHub token.');
   const headers={
     Accept:'application/vnd.github+json',
     Authorization:`Bearer ${ghToken}`,
@@ -873,7 +937,13 @@ function ensureWFApp(appId){
 
 function getAppCats(app){
   ensureWFApp(app.id);
-  const wfc=customWF[app.id].map(w=>[w.n,w.s,w.t,w.id]);
+  const wfc=customWF[app.id].map(w=>[
+    w.n,
+    (w.steps||[]).map(st=>st.command).join(' | '),
+    w.t,
+    w.id,
+    w.steps||[]
+  ]);
   return [...app.cats,{t:'Workflows',c:wfc}];
 }
 
@@ -887,7 +957,9 @@ async function verifyPwd(){
 async function unlockWF(){
   if(wfUnlocked) return;
   if(!await verifyPwd()) return;
+  if(!await ensureGitHubToken()) return;
   wfUnlocked=true;
+  try{await loadWF();}catch(_){/* keep current view if reload fails */}
   rerender();
 }
 
@@ -898,51 +970,21 @@ function lockWF(){
 }
 
 async function addWF(appId){
-  if(!wfUnlocked){if(!await verifyPwd()) return; wfUnlocked=true;}
-  const n=(prompt('Workflow name:')||'').trim();
-  if(!n) return;
-  const s=(prompt('Shortcut or steps:')||'').trim();
-  if(!s) return;
-  const tg=(prompt('Tags (comma separated):')||'').split(',').map(t=>t.trim()).filter(Boolean);
-  try{
-    ensureWFApp(appId);
-    customWF[appId].push({id:mkId(),n,s,t:tg});
-    await saveWF(`Add workflow in ${appId}`);
-    rerender();
-  }catch(err){
-    alert(err.message);
-    await loadWF();
-    rerender();
-  }
+  if(!wfUnlocked){alert('Click Unlock Workflow Edit first.');return;}
+  openWFModal(appId,'');
 }
 
 async function editWF(appId,wfId){
-  if(!wfUnlocked){if(!await verifyPwd()) return; wfUnlocked=true;}
+  if(!wfUnlocked){alert('Click Unlock Workflow Edit first.');return;}
   ensureWFApp(appId);
-  const row=customWF[appId].find(w=>w.id===wfId);
-  if(!row) return;
-  const n=(prompt('Workflow name:',row.n)||'').trim();
-  if(!n) return;
-  const s=(prompt('Shortcut or steps:',row.s)||'').trim();
-  if(!s) return;
-  const tg=(prompt('Tags (comma separated):',(row.t||[]).join(', '))||'').split(',').map(t=>t.trim()).filter(Boolean);
-  try{
-    row.n=n; row.s=s; row.t=tg;
-    await saveWF(`Edit workflow in ${appId}`);
-    rerender();
-  }catch(err){
-    alert(err.message);
-    await loadWF();
-    rerender();
-  }
+  openWFModal(appId,wfId);
 }
 
 async function delWF(appId,wfId){
-  if(!wfUnlocked){if(!await verifyPwd()) return; wfUnlocked=true;}
+  if(!wfUnlocked){alert('Click Unlock Workflow Edit first.');return;}
   ensureWFApp(appId);
   const row=customWF[appId].find(w=>w.id===wfId);
   if(!row) return;
-  if(!confirm(`Delete workflow "${row.n}"?`)) return;
   try{
     customWF[appId]=customWF[appId].filter(w=>w.id!==wfId);
     await saveWF(`Delete workflow in ${appId}`);
@@ -952,6 +994,86 @@ async function delWF(appId,wfId){
     await loadWF();
     rerender();
   }
+}
+
+function stepEditorHtml(step={title:'',command:''}){
+  const t=(step.title||'').replace(/"/g,'&quot;');
+  const c=(step.command||'').replace(/"/g,'&quot;');
+  return `<div class="step-editor"><div class="step-n"><label>Step Name</label><input class="wf-step-title" type="text" value="${t}" maxlength="120" required></div><div class="step-c"><label>Command</label><input class="wf-step-command" type="text" value="${c}" maxlength="140" required></div><button class="step-rm" type="button" onclick="removeStepEditor(this)">Remove</button></div>`;
+}
+
+function addStepEditor(step){
+  const root=document.getElementById('wfSteps');
+  root.insertAdjacentHTML('beforeend',stepEditorHtml(step||{title:'',command:''}));
+}
+
+function removeStepEditor(btn){
+  const root=document.getElementById('wfSteps');
+  if(root.children.length<=1) return;
+  const row=btn.closest('.step-editor');
+  if(row) row.remove();
+}
+
+function closeWFModal(){
+  const m=document.getElementById('wfModal');
+  m.classList.remove('on');
+  m.setAttribute('aria-hidden','true');
+}
+
+function openWFModal(appId,wfId){
+  ensureWFApp(appId);
+  wfDraftAppId=appId;
+  wfDraftId=wfId||'';
+  const row=wfDraftId?customWF[appId].find(w=>w.id===wfDraftId):null;
+  document.getElementById('wfModalTitle').textContent=row?'Edit Workflow':'Add Workflow';
+  document.getElementById('wfName').value=row?row.n:'';
+  document.getElementById('wfTags').value=row?(row.t||[]).join(', '):'';
+  const steps=document.getElementById('wfSteps');
+  steps.innerHTML='';
+  if(row&&Array.isArray(row.steps)&&row.steps.length) row.steps.forEach(st=>addStepEditor(st));
+  else addStepEditor({title:'Step 1',command:''});
+  const delBtn=document.getElementById('wfDeleteBtn');
+  delBtn.style.display=row?'inline-block':'none';
+  const m=document.getElementById('wfModal');
+  m.classList.add('on');
+  m.setAttribute('aria-hidden','false');
+}
+
+async function saveWFModal(){
+  if(!wfUnlocked){alert('Unlock Workflow Edit first.');return;}
+  ensureWFApp(wfDraftAppId);
+  const n=document.getElementById('wfName').value.trim();
+  if(!n){alert('Workflow name is required.');return;}
+  const tags=document.getElementById('wfTags').value.split(',').map(t=>t.trim()).filter(Boolean);
+  const rows=[...document.querySelectorAll('#wfSteps .step-editor')];
+  const steps=rows.map(r=>({
+    title:r.querySelector('.wf-step-title').value.trim(),
+    command:r.querySelector('.wf-step-command').value.trim()
+  })).filter(st=>st.title&&st.command);
+  if(!steps.length){alert('Add at least one step with name and command.');return;}
+  try{
+    if(wfDraftId){
+      const row=customWF[wfDraftAppId].find(w=>w.id===wfDraftId);
+      if(!row) throw new Error('Workflow not found.');
+      row.n=n; row.t=tags; row.steps=steps;
+      await saveWF(`Edit workflow in ${wfDraftAppId}`);
+    }else{
+      customWF[wfDraftAppId].push({id:mkId(),n,t:tags,steps});
+      await saveWF(`Add workflow in ${wfDraftAppId}`);
+    }
+    closeWFModal();
+    rerender();
+  }catch(err){
+    alert(err.message);
+    await loadWF();
+    rerender();
+  }
+}
+
+async function deleteWFInModal(){
+  if(!wfDraftId) return;
+  await delWF(wfDraftAppId,wfDraftId);
+  closeWFModal();
 }
 
 function rerender(){
@@ -969,6 +1091,11 @@ function fmtKey(s){
     const html=keys.map((k,ki)=>`<kbd>${k.trim()}</kbd>${ki<keys.length-1?'<span class="ksep">+</span>':''}`).join('');
     return html+(pi<arr.length-1?`<span class="ksep"> / </span>`:'');
   }).join('');
+}
+
+function fmtWFSteps(steps){
+  if(!steps||!steps.length) return '<span class="wf-sum">No steps</span>';
+  return `<div class="wf-steps">${steps.map((st,i)=>`<div class="wf-step"><span class="wf-step-idx">${i+1}.</span><span class="wf-step-name">${st.title}</span>${fmtKey(st.command)}</div>`).join('')}</div>`;
 }
 
 // ── render tags
@@ -1045,7 +1172,7 @@ function buildMain(filter,q){
       }
       const tbl=document.createElement('table');
       tbl.className='tbl';
-      cmds.forEach(([name,shortcut,tags,wfId])=>{
+      cmds.forEach(([name,shortcut,tags,wfId,wfSteps])=>{
         const tr=document.createElement('tr');
         const n=document.createElement('td');
         n.className='td-name';
@@ -1067,7 +1194,7 @@ function buildMain(filter,q){
         }
         const k=document.createElement('td');
         k.className='td-key';
-        k.innerHTML=fmtKey(shortcut);
+        k.innerHTML=isWF?fmtWFSteps(wfSteps):fmtKey(shortcut);
         const tg=document.createElement('td');
         tg.className='td-tags';
         tg.innerHTML=fmtTags(tags);
@@ -1126,6 +1253,10 @@ async function init(){
     customWF=normalizeWFStore({});
     alert('Workflows could not be loaded from GitHub right now. You can still browse shortcuts.');
   }
+  document.getElementById('wfForm').addEventListener('submit',async(e)=>{
+    e.preventDefault();
+    await saveWFModal();
+  });
   buildMain('all','');
   buildSB('all');
 }
