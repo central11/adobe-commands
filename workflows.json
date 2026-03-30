@@ -1,13 +1,9 @@
 {
-  "ps": [
+  "ps": [],
+  "ai": [
     {
       "id": "07ebfa7d-d4e4-407f-9a6e-ddfb5395c3bd",
       "n": "Create a Grid",
-      "t": [
-        "grid",
-        "create",
-        "Illustrator"
-      ],
       "steps": [
         {
           "title": "Draw a rectangle around the page",
@@ -33,10 +29,16 @@
           "title": "Make guides into official Illustrator Guides",
           "command": "View > Guides > Make Guides"
         }
-      ]
+      ],
+      "t": [
+        "grid",
+        "create",
+        "Illustrator"
+      ],
+      "updatedAt": "2026-03-30T20:30:48.292Z",
+      "updatedBy": "central11"
     }
   ],
-  "ai": [],
   "id": [],
   "pr": []
 }
