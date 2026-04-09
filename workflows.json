@@ -61,6 +61,54 @@
       "updatedBy": "central11"
     }
   ],
-  "id": [],
+  "id": [
+    {
+      "id": "b3c4d5e6-f7a8-49b0-c1d2-e3f4a5b6c7d8",
+      "n": "Push page numbers to edge of text frame (TOC)",
+      "steps": [
+        {
+          "title": "Open your TOC paragraph style (double-click it in Paragraph Styles panel)",
+          "command": "F11"
+        },
+        {
+          "title": "Go to Tabs in the style options",
+          "command": "Ctrl+Shift+T"
+        },
+        {
+          "title": "Click the right-align tab icon on the tab ruler",
+          "command": "N/A"
+        },
+        {
+          "title": "Click at the far right of the ruler, or type your frame width in the X field (e.g. 4 in)",
+          "command": "N/A"
+        },
+        {
+          "title": "In the Leader field, type a period for dot leaders (or leave blank for none)",
+          "command": "N/A"
+        },
+        {
+          "title": "Click OK and close the style dialog",
+          "command": "N/A"
+        },
+        {
+          "title": "In Layout > Table of Contents, confirm Between Entry and Number contains a tab character",
+          "command": "Layout > Table of Contents"
+        }
+      ],
+      "t": [
+        "TOC",
+        "table of contents",
+        "page number",
+        "tab stop",
+        "right align",
+        "leader",
+        "dot leader",
+        "indent",
+        "paragraph style"
+      ],
+      "updatedAt": "2026-04-09T00:00:00.000Z",
+      "updatedBy": "central11"
+    }
+  ],
   "pr": []
 }
